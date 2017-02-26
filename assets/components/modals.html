@@ -1,0 +1,589 @@
+<script id="auth" type="text/template">
+	<link rel="stylesheet" href="/assets/css/modals/compiled/auth.min.css">
+
+	<div class="content">
+		<img class="logo" src="/assets/img/logo.png" alt="logo">
+		<p>Welcome to HyperDraft, please log in below to access your account.</p>
+		<div class="ui secondary pointing menu tabs">
+            <a class="item active" data-tab="login">Log in</a>
+            <a class="item" data-tab="signup">Sign up</a>
+        </div>
+        <div class="ui tab active" data-tab="login">
+        	<div class="ui left icon fluid input">
+				<input type="email" id="loginEmail" placeholder="email" required>
+				<i class="mail icon"></i>
+			</div>
+			<div class="ui left icon fluid input">
+				<input type="password" id="loginPassword" placeholder="password" required>
+				<i class="lock icon"></i>
+			</div>
+			<small class="forgot-password" onclick="$('.action-modal .modal .inner .tabs.menu .item').tab('change tab', 'password');">I forgot my password</small>
+        </div>
+        <div class="ui tab" data-tab="signup">
+        	<div class="ui left icon fluid input">
+				<input type="text" id="signupName" placeholder="username" required>
+				<i class="user icon"></i>
+			</div>
+        	<div class="ui left icon fluid input">
+				<input type="email" id="signupEmail" placeholder="email" required>
+				<i class="mail icon"></i>
+			</div>
+			<div class="ui left icon fluid input">
+				<input type="password" id="signupPassword" placeholder="password" required>
+				<i class="lock icon"></i>
+			</div>
+			<div class="ui checkbox">
+			  <input type="checkbox" id="age">
+			  <label>I certify that I am 18 years of age</label>
+			</div>
+			<div class="ui checkbox">
+			  <input type="checkbox" id="terms">
+			  <label>I have read and agreed to the <a href="/pages/terms.html" target="_blank">Terms of Use</a> and <a href="/pages/privacy.html" target="_blank">Privacy Policy</a></label>
+			</div>
+        </div>
+        <div class="ui tab" data-tab="password">
+        	<div class="ui left icon fluid input">
+				<input type="email" id="passwordEmail" placeholder="email" required>
+				<i class="mail icon"></i>
+			</div>
+        </div>
+
+		
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm" onclick="auth.login()">Log in</button>
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<!-- Betting -->
+<script id="bet-submit" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/bet-submit.min.css">
+
+	<div class="title">Place a bet on...</div>
+	<div class="content" data-match-id="{{matchid}}">
+		<p>Select your team and place your bet.</p>
+		<div class="ui two column center aligned grid teams">
+			<div class="column">
+				<h1 class="ui icon header team" data-id="{{teams.0.id}}">
+					<img class="ui image" src="{{teams.0.logo}}">
+					<div class="content">{{teams.0.name}}</div>
+					<div class="odds">x{{teams.0.odds}}</div>
+				</h1>
+			</div>
+			<div class="column">
+				<h1 class="ui icon header team" data-id="{{teams.1.id}}">
+					<img class="ui image" src="{{teams.1.logo}}">
+					<div class="content">{{teams.1.name}}</div>
+					<div class="odds">x{{teams.1.odds}}</div>
+				</h1>
+			</div>
+		</div>
+		<div class="ui input fluid amount">
+			<input type="text" class="currency-select" placeholder="Amount...">
+		</div>
+		<hr>
+		<div class="estimated-return">
+			<h3 class="ui header">Estimated Return</h3>
+			<p><span class="tilde">~0</span> <i class="hc"></i></p>
+			<small class="warning">Odds are dynamic, please remember that we have no control over them.</small>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm">Confirm</button>
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<!-- Banned -->
+<script id="banned" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/banned.min.css">
+
+	<div class="title">Banned!</div>
+	<div class="content">
+		<p>This account has been banned for: {{reason}}</p>
+		<p>Ban expiration: {{expiration}}</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel" onclick="auth.logout()">:(</button>
+		</div>
+	</div>
+</script>
+
+<!-- Profile -->
+<script id="profile" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/banned.min.css">
+
+	<div class="title">{{userName}}</div>
+	<div class="content">
+		<p>This account has been banned for: {{reason}}</p>
+		<p>Ban expiration: {{expiration}}</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<!-- payment -->
+<script id="payment" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/payment.min.css">
+
+	<div class="title">Purchase HyperCredits</div>
+	<div class="content">
+		<p class="desc">You are about to purchase <span class="hc">{{amountHC}}</span> HyperCredits. <br/> Please choose a payment gateway below.</p>
+
+		<div class="qr-code"></div>
+
+		<p class="warning" style="display: none">Please fulfill the payment within 20 minutes. Please allow up to 48 hours for bitcoin payments to complete.</p>
+
+		<div class="payment-gateways" data-amount="{{amount}}">
+			<img src="assets/img/modals/payment/bitcoin.png" class="gateway" data-gateway="bitcoin">
+		</div>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<!-- deposit -->
+<script id="jackpot-enter" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/deposit.min.css">
+
+	<div class="title">Deposit Items from Steam</div>
+	<div class="content">
+		<div class="sort">
+			<div class="ui icon fluid input">
+			  <i class="search icon"></i>
+			  <input type="text" placeholder="Search for an item...">
+			</div>
+		</div>
+		<div class="inventory"></div>
+		<div class="stats">
+			<div class="ui three column grid">
+				<div class="column">
+					<div class="ui statistic">
+					  <div class="value item-count">
+					    0
+					  </div>
+					  <div class="label">
+					    Item(s) Selected
+					  </div>
+					</div>
+				</div>
+				<div class="column">
+					<div class="ui statistic">
+					  <div class="value items-value">
+					    0
+					  </div>
+					  <div class="label">
+					    Value (USD)
+					  </div>
+					</div>
+				</div>
+				<div class="column">
+					<div class="ui statistic">
+					  <div class="value items-value-hc">
+					    0
+					  </div>
+					  <div class="label">
+					    Value (<i class="hc"></i>)
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm">Send Trade Offer</button>
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<!-- news -->
+<script id="news" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/news.min.css">
+
+	<div class="title">{{title}}</div>
+	<div class="content">
+		{{{content}}}
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm">Awesome!</button>
+		</div>
+	</div>
+</script>
+
+<!-- credit transfer -->
+<script id="credit-transfer" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/credit-transfer.min.css">
+
+	<div class="title">Credit Transfer</div>
+	<div class="content" data-target="{{target}}" data-amount="{{amount}}">
+		<i class="warning sign icon"></i>
+		Are you sure you want to send {{amount}} <i class="hc"></i> to <span class="accent">{{target}}</span>?
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm" disabled>3</button>
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<!-- coinflip -->
+<script id="coinflip-create" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/coinflip.min.css">
+
+	<div class="title">Create a Coinflip</div>
+	<div class="content">
+		<p>Choose a side and enter an amount.</p>
+		<div class="ui two column center aligned grid sides">
+			<div class="column">
+				<h1 class="ui icon header side ct" data-side="0">
+					<img class="ui image" src="/assets/img/games/coinflip/ct.png">
+				</h1>
+			</div>
+			<div class="column">
+				<h1 class="ui icon side header t" data-side="1">
+					<img class="ui image" src="/assets/img/games/coinflip/t.png">
+				</h1>
+			</div>
+		</div>
+		<div class="ui input fluid amount">
+			<input type="text" class="currency-select" placeholder="Amount...">
+		</div>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm">Create</button>
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<script id="coinflip-join" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/coinflip.min.css">
+
+	<div class="title">Join a Coinflip Game</div>
+	<div class="content nocreditupdate" data-id="{{id}}">
+		<p>Please confirm your action.</p>
+		<div class="ui two column center aligned grid sides">
+			<div class="column">
+				<h1* class="ui icon header side {{side}}" data-side="{{side}}">
+					<img class="ui image" src="/assets/img/games/coinflip/{{side}}.png">
+					<div class="content" data-userid="{{userid}}">{{name}}</div>
+				</h1>
+			</div>
+			<div class="column">
+				<h1 class="ui icon side header {{leftover_side}}">
+					<img class="ui image" src="/assets/img/games/coinflip/{{leftover_side}}.png">
+					<div class="content you">you</div>
+				</h1>
+			</div>
+		</div>
+		<div class="ui small statistic">
+			<div class="value">
+				{{amount}} <i class="hc"></i>
+			</div>
+			<div class="label">
+				Wager To Match
+			</div>
+		</div>
+		<small class="hash" data-tooltip="Game Hash">{{hash}}</small> 
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action confirm">Confirm</button>
+			<button class="ui button action cancel">Cancel</button>
+		</div>
+	</div>
+</script>
+
+<script id="coinflip-watch" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/coinflip.min.css">
+
+	<div class="title">Watching Coinflip Game</div>
+	<div class="content" data-id="{{id}}" data-winner-id="{{winner}}" data-winning-side="{{winningSide}}" data-timestamp="{{timestamp}}">
+		<div class="animation-container">
+			<div class="counter">
+				<div class="ui small statistic">
+				  <div class="value">
+				    <i class="refresh loading icon"></i>
+				  </div>
+				  <div class="label">
+				    Timer
+				  </div>
+				</div>
+			</div>
+			<div class="coin-container" style="display: none">
+				<div class="coin">
+					<div class="front"></div>
+					<div class="back"></div>
+				</div>
+			</div>
+		</div>
+		<div class="ui two column center aligned grid sides">
+			<div class="column">
+				<h1 class="ui icon header side {{users.0.side}}" data-side="{{users.0.side}}">
+					<img class="ui image" src="/assets/img/games/coinflip/{{users.0.side}}.png">
+					<div class="content" data-userid="{{users.0.id}}">{{users.0.name}}</div>
+				</h1>
+			</div>
+			<div class="column">
+				<h1 class="ui icon header side {{users.1.side}}" data-side="{{users.1.side}}">
+					<img class="ui image" src="/assets/img/games/coinflip/{{users.1.side}}.png">
+					<div class="content" data-userid="{{users.1.id}}">{{users.1.name}}</div>
+				</h1>
+			</div>
+		</div>
+		<div class="ui small statistic">
+		  <div class="value">
+		    {{amount}} <i class="hc"></i>
+		  </div>
+		  <div class="label">
+		    At Stake
+		  </div>
+		</div>
+		<small class="hash" data-tooltip="Game Hash">{{hash}}</small> 
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action watch cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<!-- support -->
+<script id="support" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/support.min.css">
+
+	<div class="title">Support</div>
+	<div class="content">
+		<span class="center aligned">Got a problem with the site? No worries, we'll fix it for ya. Make sure to read our FAQ before sending your ticket!</span>
+		<div class="ui two column grid">
+			<div class="column">
+				<h2 class="ui icon header ticket">
+				  <i class="mail icon"></i>
+				  <div class="content">
+				    Support Ticket
+				  </div>
+				</h2>
+			</div>
+			<div class="column">
+				<h2 class="ui icon header faq">
+				  <i class="book icon"></i>
+				  <div class="content">
+				    FAQ
+				  </div>
+				</h2>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<!-- help modals -->
+<script id="help-jackpot" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/help.min.css">
+
+	<div class="title">How to play Jackpot</div>
+	<div class="content">
+		<p>
+			Simply start by clicking "Enter Jackpot" and selecting the items you want to deposit (a maximum of 10 items per deposit) then click "Send Trade Offer".<br>
+
+			Check your incoming Trade Offers, accept it and confirm!<br>
+
+			<h3 class="ui header">Rules:</h3>
+			<ul>
+				<li>There is a 10 (TEN) Item LIMIT</li>
+				<li>The timer is set to 40 seconds PER round</li>
+				<li>The Jackpot can go up to 50 items before the timer ends</li>
+				<li>Our Rake is 5% of the total pot value</li>
+			</ul>
+
+			<h3 class="ui header">Our Feature:</h3>
+			If by chance you win a Jackpot and you're unhappy with the items you've won - simply decline the trade offer and we'll PAY you 1:1 the value of the items in HyperCredits.
+
+			<h3 class="ui header">Example:</h3>
+			I won a Karambit Tiger Tooth and it was valued at 40,000 HyperCredits but I don't care for it - I'd rather buy the ST Karambit Doppler, NO PROBLEM! Decline the trade and your HyperCredits will be credited to your account!<br>
+
+			Feedback? Submit a support ticket.
+		</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<script id="help-coinflip" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/help.min.css">
+
+	<div class="title">How to play Coinflip</div>
+	<div class="content">
+		<p>
+			The concept behind Coinflip is a generational tradition, the classic 50/50.<br>
+
+			<h3 class="ui header">Create:</h3>
+			To place a bet, you must stake 10 Hyper Credits by clicking "Create Coinflip" and entering your Hyper Credit Amount.
+			
+			<h3 class="ui header">Join:</h3>
+			To enter a bet, you must have the exact equivalent of Hyper Credits available in your wallet to duel versus another player - once you've acquired Hyper Credits, simply press the "Joinable" button and you will be entered automatically.
+
+			<h3 class="ui header">Transparency:</h3>
+			Odds are entirely 50/50, round hash for each game is displayed in the Coinflip round. <br>
+
+			The house cut on Coinflip is 5% of the total Hyper Credit value, we will never take more than 5% guaranteed.
+		</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<script id="help-roulette" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/help.min.css">
+
+	<div class="title">How to play Roulette</div>
+	<div class="content">
+		<p>
+			There are three colors, each color corresponds with their respective numbers. <br>
+			
+			<h3 class="ui header">Colors:</h3>
+			Red are Even numbers and payout 2X your bet (2, 4, 6, 8 etc)<br>
+			Black are Odd numbers and payout 2X your bet  (1, 3, 5, 7 etc)<br>
+			Blue is ZERO, the payout is 14X your bet<br>
+
+			<h3 class="ui header">Betting:</h3>
+			To place a bet, select the amount of Hyper Credits you'd like to stake and click on the appropriate Color you'd like to place your bet on. You can only place bets every 2 seconds, you can see all of our onsite notifications through the alert at the bottom of your screen.<br>
+		</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<script id="help-betting" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/help.min.css">
+
+	<div class="title">How to play Roulette</div>
+	<div class="content">
+		<p>
+			Match Betting is a game of pure skill, understanding your team's composition, cohesiveness and abilities is what will set you ahead on your bets. With HyperDraft's Match Betting, we offer 4 Major ESPORTS related brands, Overwatch, League of Legends, DOTA2 and CS:GO.
+			
+			<h3 class="ui header">Placing a bet:</h3>
+			To place a bet, left click on the Match you want and a dialog will popup requesting the following information: how much you want to stake, what team you're betting on and the confirmation. After placing your bet, click the Confirm button and your bet is automatically put in: just refresh the page and you'll see your bet on the Match.
+			
+			<h3 class="ui header">Cancellations & such:</h3>
+			If there are: cancellations of matches or draws, our system automatically pays back the same amount as put in.
+
+			<h3 class="ui header">Warnings:</h3>
+			The estimated return is not an exact return, as the amounts suggested are based on the current stakes - every time someone makes a bet, your odds change. Please be aware that this is a Skill based, player vs. player game - all payouts are calculated from total bets with a 5% operations tax for HyperDraft. <br><br>
+
+			Happy Betting!
+		</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<script id="help-chat" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/help.min.css">
+
+	<div class="title">Chat Rules & Help</div>
+	<div class="content">
+		<p>
+			<h3 class="ui header">Chat Rules:</h3>
+			<ul>
+				<li>Absolutely no begging/asking/trading in chat.</li>
+				<li>Play our games at your own risk, we are not liable for any losses you may incur.</li>
+				<li>No trading. If caught item trading without playing games, your account will be banned and credits will be lost.</li>
+				<li>Do not ask about support tickets in chat. You can expect a response within 72 hours of sending your ticket.</li>
+				<li>Do not attempt to exploit our system. You will be banned and all of your Hyper Credits will be revoked.</li>
+				<li>Do not curse, complain, or spam ref codes in chat. This will result in a mute and an eventual ban.</li>
+				<li>Do not lie about transactions on support tickets, as this can result in a ban.</li>
+				<li>Respect our staff. Any rude remarks or attempts to belittle them will result in a mute.</li>
+				<li>Do not post your ref link/codes in the chat, bio, or in your name.</li>
+			</ul>
+			
+			<h3 class="ui header">Commands:</h3>
+			<ul>
+				<li>/pm name - send a private message</li>
+				<li>/send name amount - send credits</li>
+			</ul>
+			You can also right click a message for a quicker shortcut to commands.
+
+			<h3 class="ui header">Bell:</h3>
+			The bell allows you to toggle whether you'd like to only receive chat messages containing mentions and private messages.
+			
+			<h3 class="ui header">Emotes:</h3>
+			We currently support all global Twitch emotes, a list can be found at <a href="https://twitchemotes.com/">https://twitchemotes.com/</a>
+		</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>
+
+<!-- provably fair modals -->
+<script id="provably-fair" type="text/template">
+	<link type="text/css" rel="stylesheet" href="/assets/css/modals/compiled/help.min.css">
+
+	<div class="title">Provably Fair</div>
+	<div class="content">
+		<p>
+			Provably Fair is a way for our users to make sure that the result of our games are generated before the roll/flip/end of our games.
+
+			<!-- <h3 class="ui header">How Provably Fair affects Coinflip</h3>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum commodi provident accusamus impedit maiores, recusandae, tenetur totam facilis assumenda adipisci nostrum asperiores natus deserunt nemo reiciendis, minus. Consectetur impedit, reprehenderit fugiat assumenda repellat aliquid nihil blanditiis quod perspiciatis possimus voluptatem ipsum iure, at vitae placeat quidem iusto porro rerum cumque. -->
+			
+			<h3 class="ui header">How Provably Fair affects Roulette</h3>
+			Before the game starts, a random "GameID" is generated for the following:
+
+ 			<ol>
+				<li>A round "Secret" is generated by a hex string from the "GameID"</li>
+				<li>An "HMAC" is generated using a "SHA512 encryption" and then converted to Hex</li>
+				<li>Lastly, a random Hash is generated using the same game "Secret"</li>
+				<li>After these steps, the initial "roll" happens by parsing the first 16 bytes (4 characters) of the "HMAC"</li>
+				<li>The game then starts and once the game ends, we take the total of all bets and add it into the Initial Roll</li>
+				<li>Once we've gotten the final roll, we then get the modulus of two numbers added, which is the winning number.</li>
+			</ol>
+			 
+			This might sound all really too complex, but to verify your Roulette bets - visit <a href="https://repl.it/E3dn">https://repl.it/E3dn</a> and copy the information that is provided on the Past Rolls section or <b>on the Provably Fair section of the Stats page</b> into the terminal. <br><br>
+			 
+			To be a truly Provably Fair Roulette, you must make your code transparent to determine the outcome - once you've visited the link above, our Provably Fair method is wide-open on the left side, while the terminal on the right is there for you to verify your Game Hash.
+
+		</p>
+	</div>
+	<div class="footer">
+		<div class="actions">
+			<button class="ui button action cancel">Close</button>
+		</div>
+	</div>
+</script>

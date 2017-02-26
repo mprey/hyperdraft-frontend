@@ -1,0 +1,204 @@
+@colorAccent: #0087dc;
+@colorAccentInnactive: #054b78;
+@colorText: #eee;
+@colorDark: #0e1319; // Navbar, Sidebar BGs
+@colorDarker: #0a0e11; // Menu Separators
+@colorLighter: #13181e; // Menu Item Icon
+@colorBackground: #141a23; // Background - not really used.
+
+@Montserrat: "Montserrat", sans-serif;
+
+.action-modal .inner {
+	display: block; // js callback to check if loaded
+	.title {
+		color: @colorText;
+		font-size: 25px;
+		font-family: @Montserrat;
+		background: #101c2b;
+		padding: 5px;
+		text-align: center;
+	}
+	.content {
+		margin-bottom: 10px;
+		.sort {
+			background: @colorDark;
+			.input {
+				i.icon {
+					color: @colorAccent;
+				}
+				input {
+					background: transparent;
+					color: @colorAccent;
+					font-family: @Montserrat;
+
+				}
+			}
+			
+		}
+		.inventory {
+			width: 100%;
+			height: 400px;
+			padding: 10px;
+			overflow-y: auto;
+			.item {
+				width: ~'calc(16.6667% - 8px)';
+				margin-right: 8px;
+				margin-bottom: 8px;
+			    background: @colorDark;
+			    float: left;
+			    cursor: pointer;
+
+			    figure {
+			    	margin: 0;
+				    width: 100%;
+				    height: 8em;
+				    overflow: hidden;
+				    padding: 10px;
+				    display: flex;
+				    align-items: center;
+				    background: @colorDarker;
+				    position: relative;
+				    .price {
+				    	position: absolute;
+				    	top: 0; right: 0;
+				    	border-bottom-left-radius: 3px;
+				    	background: @colorAccent;
+				    	padding: 3px 8px;
+				    	color: white;
+				    	font-size: 12px;
+				    	font-family: @Montserrat;
+				    }
+				    .st {
+				    	position: absolute;
+				    	top: 0; left: 0;
+				    	padding: 3px 8px;
+				    	color: orange;
+				    	font-size: 12px;
+				    	font-family: @Montserrat;
+				    }
+				    .condition {
+				    	position: absolute;
+				    	bottom: 0; right: 0;
+				    	padding: 3px 8px;
+				    	color: green;
+				    	font-size: 12px;
+				    	font-family: @Montserrat;
+				    }
+				    img {
+				    	width: 100%;
+				    }
+				    .meta {
+				    	position: absolute;
+				    	display: flex;
+				    	align-items: center;
+				    	top: 0; left: 0;
+				    	width: 100%; height: 100%;
+				    	padding: 8px;
+				    	background: rgba(0,0,0,0.8);
+				    	opacity: 0;
+				    	transition: opacity 800ms ease;
+
+				    	.inner {
+							color: white;
+							width: 100%;
+					    	font-size: 12px;
+					    	text-align: center;
+					    	font-family: @Montserrat;
+				    	}
+
+				    	&:hover {
+				    		opacity: 1;
+				    	}
+				    }
+			    }
+				
+				@media screen and (min-width: 320px) { // Tablet
+				    width: calc(~'50% - 8px');
+				    figure {
+				    	height: 12em;
+				    }
+				}
+				@media screen and (min-width: 500px) { // Tablet
+				    width: calc(~'33.33% - 8px');
+				    figure {
+				    	height: 12em;
+				    }
+				}
+				@media screen and (min-width: 986px) { // Laptop
+				   width: calc(~'20% - 8px');
+				   figure {
+				    	height: 10em;
+				    }
+				}
+				@media screen and (min-width: 1600px) { // Desktop
+				    width: calc(~'16.6667% - 8px');
+				    figure {
+				    	height: 8em;
+				    }
+				}
+			    
+				
+				&.selected {
+					figure {
+						background: @colorAccentInnactive;
+					}
+					
+				}
+			}
+		}
+		.stats {
+			background: @colorDark;
+
+			.grid {
+				.column {
+					text-align: center;
+					font-family: @Montserrat;
+
+					.value {
+						color: @colorAccent;
+						font-size: 20px !important;
+					} 
+					.label {
+						color: @colorAccentInnactive;
+						font-size: 14px !important;
+					}
+				}
+			}
+		}
+		
+	}
+	.footer {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		
+		text-align: center;
+		padding: 0;
+
+		.actions {
+			.action {
+				height: 50px;
+				width: 50%;
+				margin: 0;
+				color: @colorText;
+				float: left;
+				border-radius: 0;
+				font-size: 16px;
+				font-family: @Montserrat;
+				transition: background .3s ease;
+				&.cancel {
+					background: rgba(255,0,0,0.2);
+					&:hover {
+						background: rgba(255,0,0,0.3);
+					}
+				}
+				&.confirm {
+					background: fade(@colorAccentInnactive, 80%);
+					&:hover {
+						background: fade(@colorAccent, 80%);
+					}
+				}
+			}
+		}
+	}
+}

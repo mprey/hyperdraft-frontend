@@ -1,0 +1,144 @@
+@colorAccent: #0087dc;
+@colorAccentInnactive: #054b78;
+@colorText: #eee;
+@colorDark: #0e1319; // Navbar, Sidebar BGs
+@colorDarker: #0a0e11; // Menu Separators
+@colorLighter: #13181e; // Menu Item Icon
+@colorBackground: #141a23; // Background - not really used.
+
+@Montserrat: "Montserrat", sans-serif;
+
+.action-modal .inner {
+	display: block; // js callback to check if loaded
+	.title {
+		color: @colorText;
+		font-size: 25px;
+		font-family: @Montserrat;
+		background: #101c2b;
+		padding: 5px;
+		text-align: center;
+	}
+	.content {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		padding: 10px;
+		text-align: center;
+		
+		.team {
+			cursor: pointer;
+
+			label {
+				padding: 0;
+				
+				.image {
+				    width: 96px;
+				    margin-bottom: 10px;
+				}
+			}
+			
+			.content {
+				padding: 5px;
+				transition: border .3s ease;
+			}
+			.odds {
+				position: absolute;
+			    top: 5px;
+			    right: 25px;
+			    font-size: 14px;
+			    background: @colorAccent;
+			    color: @colorText;
+			    padding: 1px 6px;
+			    transform: skew(-6deg);
+			}
+
+			&.selected {
+				.content {
+					border-bottom: 3px solid @colorAccent;
+				}
+			}
+		}
+
+		.amount.input {
+			min-width: 50%;
+			max-width: 80%;
+			display: inline-flex;
+			margin-bottom: 20px;
+
+			input {
+				background: none;
+				outline: none;
+				border-radius: 0;
+				border: 0;
+				border-bottom: 3px solid @colorAccentInnactive;
+				color: @colorText;
+				transition: border .3s ease;
+				text-align: center;
+				font-family: @Montserrat;
+				font-size: 20px;
+
+				&:focus {
+					outline-color: transparent;
+					outline-style: none;
+					border: 0;
+					border-bottom: 5px solid @colorAccent;
+				}
+			}
+		}
+
+		.estimated-return {
+			.ui.header {
+				font-family: @Montserrat;
+				color: @colorAccent;
+			}
+			.tilde, .warning {
+				color: orange;
+			}
+			.warning {
+				font-size: 11px;
+			}
+		}
+
+		hr {
+		    border: 0;
+	    	height: 1px;
+		    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(255,255,255,0.75), rgba(0,0,0,0));
+		    background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(255,255,255,0.75), rgba(0,0,0,0));
+		    background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(255,255,255,0.75), rgba(0,0,0,0));
+		}
+	}
+	.footer {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		
+		text-align: center;
+		padding: 0;
+
+		.actions {
+			.action {
+				height: 50px;
+				width: 50%;
+				margin: 0;
+				color: @colorText;
+				float: left;
+				border-radius: 0;
+				font-size: 16px;
+				font-family: @Montserrat;
+				transition: background .3s ease;
+				&.confirm {
+					background: fade(@colorAccentInnactive, 80%);
+					&:hover {
+						background: fade(@colorAccent, 80%);
+					}
+				}
+				&.cancel {
+					background: rgba(255,0,0,0.2);
+					&:hover {
+						background: rgba(255,0,0,0.3);
+					}
+				}
+			}
+		}
+	}
+}

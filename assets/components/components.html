@@ -1,0 +1,503 @@
+<!-- Profile -->
+<script id="user-navbar" type="text/template">
+	<img src="{{avatar}}"/>
+	<div class="data">
+		<div class="name">{{name}}</div>
+		<div class="balance"><span class="acc-balance">{{balance}}</span> <i class="hc"></i></div>
+		<div class="logout" onclick="auth.logout()">logout</div>
+	</div>
+</script>
+
+<script id="mobile-navbar" type="text/template">
+    <div class="ui two column grid">
+        <div class="column">
+            <img src="{{avatar}}"/>
+        </div>
+        <div class="column">
+            <div class="data">
+                <div class="name">{{name}}</div>
+                <div class="balance"><span class="acc-balance">{{balance}}</span> <i class="hc"></i></div>
+                <div class="logout" onclick="auth.logout()">logout</div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- Chat -->
+<script id="chat-message" type="text/template">
+	<div class="chat-message {{#personal}}personal{{/personal}} {{oddeven}}" data-id="{{id}}">
+        <img src="{{avatar}}" class="pp">
+        <div class="data">
+            <span class="name rank-{{rank}}" data-id="{{userid}}" data-steamid="{{steamid}}">{{{name}}}</span>
+            <p class="message">{{{message}}}</p>
+        </div>
+        <span class="timestamp">{{timestamp}}</span>
+	</div>
+</script>
+
+<script id="chat-alert" type="text/template">
+    <div class="chat-message alert">
+        <div class="data">
+            <span class="name" data-id="" data-steamid="">SYSTEM ALERT</span>
+            <p class="message">{{{message}}}</p>
+        </div>
+        <span class="timestamp">{{timestamp}}</span>
+    </div>
+</script>
+
+<script id="user-profile-modal" type="text/template">
+    <div class="header-bar">
+        <i class="material-icons close-btn">close</i>
+        <img class="avatar" src="{{user.avatarURL}}">
+        <div class="data">
+            <div class="name rank-{{user.admin}}" data-id="{{user.id}}">{{user.username}}</div>
+            <div class="meta">
+                <span class="rank rank-{{user.admin}}">{{user.role}}</span>
+                {{#user.online}}<span class="online">Online</span>{{/user.online}}
+                <a href="http://steamcommunity.com/profiles/{{user.steam.steamid}}" target="_blank"><span class="steam">Steam Profile <i class="external icon"></i></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="stats">
+        <h2 class="ui header">Stats</h2>
+        <div class="ui three column grid stackable">
+            <div class="column">
+                <div class="ui statistic">
+                  <div class="value cf-won">{{coinflip.wonCount}}<small>/{{coinflip.totalCount}}</small></div>
+                  <div class="label">
+                    Coinflips Won
+                  </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                  <div class="value bets">{{roulette.wonCount}}<small>/{{roulette.totalCount}}</small></div>
+                  <div class="label">
+                    Rolls Won
+                  </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                  <div class="value trades">{{matchBet.wonCount}}<small>/{{matchBet.totalCount}}</small></div>
+                  <div class="label">
+                    Matches Won
+                  </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                  <div class="value trades">{{overall.total}} <i class="hc"></i></div>
+                  <div class="label">
+                    Total Bet
+                  </div>
+                </div>
+            </div>
+             <div class="column">
+                <div class="ui statistic">
+                  <div class="value trades">{{overall.won}}<small>/{{overall.total}}</small> <i class="hc"></i></div>
+                  <div class="label">
+                    Won/Total
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<!-- Modal -->
+<script id="action-modal" type="text/template">
+	<div class="action-modal" style="display: none">
+		<div class="backdrop"></div>
+		<div class="modal">
+			<div class="inner"></div>
+			<div class="loading-div">
+				<div class="loader">
+					<i class="huge notched circle loading icon"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!-- Matches -->
+<script id="matches-listing-row" type="text/template">
+    <div class="row-card match {{#odd}}odd{{/odd}}" data-id="{{id}}" style="display: none">
+        <div class="game-img">
+            <img src="{{game_icon}}">
+        </div>
+        <div class="match-info">
+            <div class="tournament-info">
+                <div class="title">{{organizer}} <span class="stage">{{format}}</span></div>
+            </div>
+            <div class="teams">
+                <span class="team left" data-logo="{{teams.0.logo}}{{^teams.0.logo}}/assets/img/pp.png{{/teams.0.logo}}" data-id="{{teams.0.id}}" data-odds="{{teams.0.odds}}" data-name="{{teams.0.name}}{{^teams.0.name}}TBD{{/teams.0.name}}"><i class="{{teams.0.country_code}}{{^teams.0.country_code}}eu{{/teams.0.country_code}} flag"></i> {{teams.0.name}}{{^teams.0.name}}TBD{{/teams.0.name}}</span>
+                <span class="separator">vs</span>
+                <span class="team right" data-logo="{{teams.1.logo}}{{^teams.1.logo}}/assets/img/pp.png{{/teams.1.logo}}" data-id="{{teams.1.id}}" data-odds="{{teams.1.odds}}" data-name="{{teams.1.name}}{{^teams.1.name}}TBD{{/teams.1.name}}"><i class="{{teams.1.country_code}}{{^teams.1.country_code}}eu{{/teams.1.country_code}} flag"></i> {{teams.1.name}}{{^teams.1.name}}TBD{{/teams.1.name}}</span>
+            </div>
+        </div>
+        <div class="odds">
+            <div class="inner">
+                <div class="teams">
+                    <div class="left">{{teams.0.percentage}}% <small>({{teams.0.value}} <i class="hc"></i>)</small></div>
+                    <div class="right">{{teams.1.percentage}}% <small>({{teams.1.value}} <i class="hc"></i>)</small></div>
+                </div>
+                <div class="odds-bar">
+                    <div class="ui progress" data-percent="{{teams.0.percentage}}">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="start-time {{#live}}live{{/live}}">{{liveAt}}</div>
+    </div>
+</script>
+
+<!-- Account Page -->
+<script id="account-info" type="text/template">
+    <div class="ui one column grid container">
+        <div class="column">
+            <img src="{{avatar}}&s=128">
+            <h1>{{name}}</h1>
+            <small><span class="id">{{id}}</span> <span data-tooltip="User ID"><i class="question icon"></i></span></small>
+            <h2>{{balance}} <i class="hc"></i></h2>
+        </div>
+    </div>
+</script>
+
+<script id="account-stats-pending-transactions" type="text/template">
+    <tr>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id">
+            {{gateway}}
+        </td>
+        <td class="id"> 
+            {{amountUSD}}
+        </td>
+        <td>
+            {{time}}
+        </td>
+        <td>
+            {{confirmations}}/3
+        </td>
+        <td>
+            {{status}}
+        </td>
+    </tr>
+</script>
+
+<script id="account-stats-recent-transactions" type="text/template">
+    <tr>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id">
+            {{gateway}}
+        </td>
+        <td class="id"> 
+            {{amountUSD}}
+        </td>
+        <td>
+            {{time}}
+        </td>
+         <td>
+            {{time_completed}}
+        </td>
+        <td>
+            {{status}}
+        </td>
+    </tr>
+</script>
+
+<script id="account-stats-recent-bets" type="text/template">
+    <tr>
+        <td class="game">
+            <img src="{{game_icon}}">
+        </td>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id"> 
+            {{match_id}}
+        </td>
+        <td class="single line teams">
+            <span class="selected">{{teams.selected.name}}</span> vs {{teams.other.name}}
+        </td>
+        <td>
+            {{time}}
+        </td>
+        <td class="single line">
+            {{amount}} <i class="hc"></i>
+        </td>
+        <td class="single line">
+            x{{teams.selected.odd}}
+        </td>
+        <td class="single line">
+            {{teams.selected.er}} <i class="hc"></i>
+        </td>
+        <td>
+            {{status}}
+        </td>
+    </tr>
+</script>
+
+<script id="account-stats-recent-coinflips" type="text/template">
+    <tr>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id">
+            {{side}}
+        </td>
+        <td class="id"> 
+            {{wager}} <i class="hc"></i>
+        </td>
+        <td>
+            {{time_created}}
+        </td>
+         <td>
+            {{time_completed}}
+        </td>
+        <td>
+            {{status}}
+        </td>
+    </tr>
+</script>
+
+<script id="account-stats-recent-roulette" type="text/template">
+    <tr>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id">
+            {{gameid}}
+        </td>
+        <td class="id">
+            {{selection}}
+        </td>
+        <td class="id"> 
+            {{wager}} <i class="hc"></i>
+        </td>
+         <td>
+            {{time}}
+        </td>
+        <td>
+            {{status}}
+        </td>
+    </tr>
+</script>
+
+
+<script id="account-stats-recent-steam-transactions" type="text/template">
+    <tr>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id">
+            {{type}}
+        </td>
+        <td class="items">
+            {{itemsLength}}x 
+            {{#items}}
+              <img src="{{icon_url}}" title="{{name}}">
+            {{/items}}
+        </td>
+        <td>
+            {{time}}
+        </td>
+        <td>
+            {{status}}
+        </td>
+    </tr>
+</script>
+
+<!-- Shop -->
+<script id="shop-csgo-item" type="text/template">
+    <div class="ui card item" data-assetid="{{assetid}}" data-id="{{id}}" data-type="{{item_info.type}}" data-price="{{price}}">
+        <figure class="image" style="background-image: radial-gradient(at 5% -200px, rgba(0,135,220,0.3) 30%, rgba({{colorRGB}},0.5) 100%); border-bottom: 5px solid #{{color}}">
+            <img class="lazy" data-original="{{icon_url}}" src="/assets/img/logo_preload.png">
+        </figure>
+        <div class="card-content content">
+            <span class="header">{{item_info.name}}</span>
+            <div class="meta">
+                {{#item_info.stattrak}}<span class="stattrak">StatTrak™</span>{{/item_info.stattrak}}
+                {{#item_info.condition}}<span class="condition">{{item_info.condition}}</span>{{/item_info.condition}}
+            </div>
+            <div class="description">
+                <div class="ui fluid fade buy animated button" style="background: rgba({{colorRGB}},0.4)">
+                    <div class="visible content">{{priceLocale}} <i class="hc"></i></div>
+                    <div class="hidden content"><i class="shop icon"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- modal steam item -->
+<script id="modal-deposit-item" type="text/template">
+    <div class="item" data-id="{{assetid}}" data-price="{{price}}">
+        <figure style="border-bottom: 5px solid #{{color}}">
+            <div class="price">${{price}}</div>
+            {{#stattrak}}<div class="st">StatTrak™</div>{{/stattrak}}
+            {{#condition}}<div class="condition">{{condition}}</div>{{/condition}}
+            <img src="{{icon}}">
+            <div class="meta">
+                <div class="inner">{{name}}</div>
+            </div>
+        </figure>
+    </div>
+</script>
+
+<!-- coinflip -->
+<script id="coinflip-listing" type="text/template">
+    <tr class="listing" data-id="{{id}}" data-amount="{{amount}}" data-timestamp-end="null" data-expire="{{expire}}">
+        <td class="side" data-side="{{side.id}}"><img src="/assets/img/games/coinflip/{{side.string}}.png"></td>
+        <td class="pp"><img src="{{avatar}}"></td>
+        <td class="name"><span>{{name}}</span></td>
+        <td class="wager">{{amountLocale}} <i class="hc"></i></td>
+        <td class="status"><span class="joinable">Joinable</span></td>
+    </tr>
+</script>
+
+<script id="coinflip-history-listing" type="text/template">
+    <tr class="listing" data-id="{{id}}">
+        <td class="pp"><img src="{{avatar}}"></td>
+        <td class="name" data-id="{{winnerID}}"><span>{{name}}</span></td>
+        <td class="wager">{{wager}} <i class="hc"></i></td>
+    </tr>
+</script>
+
+<!-- jackpot -->
+<script id="jackpot-entry" type="text/template">
+    <div class="ui segment item" style="border-right: 5px solid #{{color}}" data-amount="{{total}}" data-userid="{{id}}">
+      <div class="ui small image">
+          <img src="{{avatar}}">
+      </div>
+      <div class="content">
+          <div class="name" data-id="{{id}}" data-steamid="{{steamid}}">{{name}}</div>
+          <div class="money">{{totalLocale}} <i class="hc"></i></div>
+          <div class="item-count">{{itemcount}} item(s)</div>
+      </div>
+    </div>
+</script>
+
+<script id="jackpot-item" type="text/template">
+    <div class="item" data-price="{{price}}">
+      <figure style="border-bottom: 5px solid #{{color}}">
+          <div class="price">{{priceLocale}} <i class="hc"></i></div>
+          <img src="{{icon}}">
+          <div class="meta">
+              <div class="inner">{{{name}}}</div>
+          </div>
+      </figure>
+    </div>
+</script>
+
+<!-- roulette -->
+<script id="roulette-entry" type="text/template">
+    <tr class="listing" data-amount="{{amount}}">
+      <td class="pp"><img src="{{user.avatarURL}}"></td>
+          <td class="name" data-id="{{user.id}}"><span>{{{user.username}}}</span></td>
+      <td class="wager">{{amountLocale}} <i class="hc"></i></td>
+    </tr>
+</script>
+
+<!-- stats -->
+<script id="stats-coinflip-listing" type="text/template">
+    <tr>
+        <td class="id">
+            {{secretID}}
+        </td>
+        <td class="id">
+            {{hash}}
+        </td>
+        <td class="id"> 
+            {{secret}}
+        </td>
+        <td>
+            {{total}} <i class="hc"></i>
+        </td>
+        <td>
+            {{winningTeam}}</i>
+        </td>
+    </tr>
+</script>
+
+<script id="stats-roulette-listing" type="text/template">
+    <tr>
+        <td class="id">
+            {{id}}
+        </td>
+        <td class="id">
+            {{hash}}
+        </td>
+        <td class="id"> 
+            {{secret}}
+        </td>
+        <td>
+            {{total}} <i class="hc"></i>
+        </td>
+        <td>
+            {{winningOption}}
+        </td>
+    </tr>
+</script>
+
+<script id="stats-ld-roulette-listing" type="text/template">
+    <tr>
+        <td>
+            {{rank}}
+        </td>
+        <td data-steamid="{{userData.steam.steamid}}">
+            {{userData.username}}
+        </td>
+        <td>
+            {{total}} <i class="hc"></i>
+        </td>
+    </tr>
+</script>
+
+<script id="stats-ld-coinflip-listing" type="text/template">
+    <tr>
+        <td>
+            {{rank}}
+        </td>
+        <td data-steamid="{{creatorid}}">
+            {{creatorname}}
+        </td>
+        <td>
+            {{total}} <i class="hc"></i>
+        </td>
+    </tr>
+</script>
+
+<script id="stats-ld-deposits-listing" type="text/template">
+    <tr>
+        <td>
+            {{rank}}
+        </td>
+        <td data-steamid="{{userData.steam.steamid}}">
+            {{userData.username}}
+        </td>
+        <td>
+            {{total}} <i class="hc"></i>
+        </td>
+    </tr>
+</script>
+
+<script id="stats-ld-withdraws-listing" type="text/template">
+    <tr>
+        <td>
+            {{rank}}
+        </td>
+        <td data-steamid="{{userData.steam.steamid}}">
+            {{userData.username}}
+        </td>
+        <td>
+            {{total}} <i class="hc"></i>
+        </td>
+    </tr>
+</script>

@@ -1,0 +1,120 @@
+<div class="inner-content market">
+
+    <div class="section section-info">
+        <div class="overlay"></div>
+        <div class="center">
+            <h1 class="ui header">Shop</h1>
+            <p>Redeem your HyperCredits for sweet CSGO skins!</p>
+        </div>
+    </div>
+
+    <div class="section section-sort">
+        <div class="ui stackable container grid">
+            <div class="four wide column">
+                <div class="ui floating dropdown labeled search icon button sort-type">
+                    <i class="cube icon"></i>
+                    <span class="text">Type</span>
+                    <div class="menu">
+                        <div class="item">All</div>
+                        <div class="item">Pistol</div>
+                        <div class="item">Rifle</div>
+                        <div class="item">SMG</div>
+                        <div class="item">Heavy</div>
+                        <div class="item">Knife</div>
+                    </div>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui floating dropdown labeled search icon button sort-condition">
+                    <i class="star icon"></i>
+                    <span class="text">Condition</span>
+                    <div class="menu">
+                        <div class="item">All</div>
+                        <div class="item">Factory New</div>
+                        <div class="item">Minimal Wear</div>
+                        <div class="item">Field-Tested</div>
+                        <div class="item">Well-Worn</div>
+                        <div class="item">Battle-Scarred</div>
+                    </div>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui fluid left icon input sort-min">
+                    <i class="minus icon"></i>
+                    <input type="text" placeholder="Min. Price">
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui fluid left icon input sort-max">
+                    <i class="plus icon"></i>
+                    <input type="text" placeholder="Max. Price">
+                </div>
+            </div>
+            <div class="ten wide column">
+                <div class="ui fluid left icon input sort-search">
+                    <input type="text" placeholder="Search for an item...">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui labeled search icon button" onclick="shop.load()">
+                    <i class="arrow right icon"></i>
+                    <span class="text">Apply</span>
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="ui labeled search left icon button" onclick="shop.load()">
+                    <i class="refresh icon"></i>
+                    <span class="text">Refresh</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section section-content">
+        <div class="inner-container"></div>
+        <div class="cart">
+            <div class="ui four column centered stackable grid container">
+                <div class="column">
+                    <div class="ui big statistic items-count">
+                      <div class="value hc item-count">
+                        0
+                      </div>
+                      <div class="label">
+                        Items in Cart
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui big statistic items-worth">
+                      <div class="value hc item-value">
+                        0.00
+                      </div>
+                      <div class="label">
+                        Worth (<i class="hc"></i>)
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui big statistic balance">
+                      <div class="value hc">
+                        <span class="acc-balance"></span>
+                      </div>
+                      <div class="label">
+                        Your Balance
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <button class="ui fluid massive primary button buy-btn" onclick="shop.checkout()">Buy Item(s)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('.ui.dropdown').dropdown();
+        shop.load()
+    })
+</script>

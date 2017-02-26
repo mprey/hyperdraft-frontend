@@ -1,0 +1,14 @@
+[
+	{
+		"title": "Recent Bets are here!",
+		"content": "You can now see your recent bets in your Account page! <br> This is a test news post."
+	},
+	{
+		"title": "Chat PM & Mentions Mode",
+		"content": "Tired of the useless spam in chat?<br /> You can now block out the haters by only receiving mentions and pms through chat. <br /> Just click the little bell icon next the chat toggle. Enjoy!"
+	},
+	{
+		"title": "Affiliates is here!",
+		"content": "<img src='/assets/img/modals/news/affiliates.png'/> Its finally time for us to introduce our affiliates system! Claim your code now and start earning credits.<br><br> You can find it in your account page.<br>(make sure to CTRL+F5 or clean cache)"
+	}
+]

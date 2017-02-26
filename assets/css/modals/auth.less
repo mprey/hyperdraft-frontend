@@ -1,0 +1,124 @@
+@colorAccent: #0087dc;
+@colorAccentInnactive: #054b78;
+@colorText: #eee;
+@colorDark: #0e1319; // Navbar, Sidebar BGs
+@colorDarker: #0a0e11; // Menu Separators
+@colorLighter: #13181e; // Menu Item Icon
+@colorBackground: #141a23; // Background - not really used.
+
+@Montserrat: "Montserrat", sans-serif;
+
+.action-modal .inner {
+	display: block; // js callback to check if loaded
+	.title {
+		color: @colorText;
+		font-size: 25px;
+		font-family: @Montserrat;
+		background: #101c2b;
+		padding: 5px;
+		text-align: center;
+	}
+	.content {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		padding: 10px;
+		text-align: center;
+
+		.ui.menu.tabs {
+			display: inline-flex;
+			.item {
+				color: rgba(255,255,255,0.5);
+				border-bottom: 3px solid @colorAccentInnactive;
+				font-size: 14px;
+				transition: color .3s ease, border .5s ease;
+
+				&.active, &:hover {
+					color: @colorText;
+					border-bottom: 3px solid @colorAccent;
+				}
+			}
+		}
+
+		img.logo {
+			width: 80%;
+			display: block;
+			margin: 0 auto;
+		}
+		
+		.input {
+			margin-bottom: 10px;
+
+			input {
+				background: none;
+				outline: none;
+				border-radius: 0;
+				border: 0;
+				border-bottom: 3px solid @colorAccentInnactive;
+				color: @colorText;
+				transition: border .3s ease;
+				font-family: @Montserrat;
+				font-size: 15px;
+
+				&:focus {
+					outline-color: transparent;
+					outline-style: none;
+					border: 0;
+					border-bottom: 5px solid @colorAccent;
+				}
+			}
+
+			i.icon {
+				color: @colorAccent;
+			}
+		}
+
+		.ui.checkbox {
+			text-align: left;
+			display: block;
+			margin-bottom: 3px;
+			label {
+				color: @colorText;
+				font-size: 14px;
+			}
+		}
+
+		.forgot-password {
+			cursor: pointer;
+		}
+	}
+	.footer {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		
+		text-align: center;
+		padding: 0;
+
+		.actions {
+			.action {
+				height: 50px;
+				width: 50%;
+				margin: 0;
+				color: @colorText;
+				float: left;
+				border-radius: 0;
+				font-size: 16px;
+				font-family: @Montserrat;
+				transition: background .3s ease;
+				&.confirm {
+					background: fade(@colorAccentInnactive, 80%);
+					&:hover {
+						background: fade(@colorAccent, 80%);
+					}
+				}
+				&.cancel {
+					background: rgba(255,0,0,0.2);
+					&:hover {
+						background: rgba(255,0,0,0.3);
+					}
+				}
+			}
+		}
+	}
+}

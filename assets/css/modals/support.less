@@ -1,0 +1,96 @@
+@colorAccent: #0087dc;
+@colorAccentInnactive: #054b78;
+@colorText: #eee;
+@colorDark: #0e1319; // Navbar, Sidebar BGs
+@colorDarker: #0a0e11; // Menu Separators
+@colorLighter: #13181e; // Menu Item Icon
+@colorBackground: #141a23; // Background - not really used.
+
+@Montserrat: "Montserrat", sans-serif;
+
+.action-modal .inner {
+	display: block; // js callback to check if loaded
+	.title {
+		color: @colorText;
+		font-size: 20px;
+		font-family: @Montserrat;
+		background: #101c2b;
+		padding: 5px;
+		text-align: center;
+	}
+	.content {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		padding: 10px;
+		text-align: center;
+		max-height: 300px;
+		overflow-y: auto;
+
+		h2.header {
+			margin: 20px auto;
+			cursor: pointer;
+			i {
+				color: @colorAccent;
+				transition: color .3s ease;
+			}
+			.content {
+				color: @colorText;
+			}
+
+			&:hover {
+				i {
+					color: @colorAccentInnactive;
+				}
+			}
+		}
+
+		.code, .address {
+			color: red;
+		    background: #fff3d8;
+		    padding: 1px 5px;
+		    border-radius: 3px;
+		    font-size: 13px;
+		    font-family: monospace;
+
+		    pre {
+		    	background: 0;
+		    	color: red;
+		    }
+		}
+	}
+	.footer {
+		color: @colorText;
+		font-size: 15px;
+		font-family: @Montserrat;
+		
+		text-align: center;
+		padding: 0;
+
+		.actions {
+			.action {
+				height: 50px;
+				width: 100%;
+				margin: 0;
+				color: @colorText;
+				float: left;
+				border-radius: 0;
+				font-size: 16px;
+				font-family: @Montserrat;
+				transition: background .3s ease;
+				&.cancel {
+					background: rgba(255,0,0,0.2);
+					&:hover {
+						background: rgba(255,0,0,0.3);
+					}
+				}
+				&.confirm {
+					background: fade(@colorAccentInnactive, 80%);
+					&:hover {
+						background: fade(@colorAccent, 80%);
+					}
+				}
+			}
+		}
+	}
+}

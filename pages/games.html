@@ -1,0 +1,325 @@
+<div class="inner-content games">
+  <div class="section section-menu">
+    <div class="ui secondary stackable pointing menu games-menu">
+      <a class="item active" data-tab="roulette">
+        <img src="/assets/img/games/roulette/menu.png"> Roulette
+        <span class="status"><i class="hc"></i> 0</span>
+      </a>
+      <!-- <a class="item" data-tab="jackpot">
+        <img src="/assets/img/games/jackpot/menu.png"> Jackpot
+      </a> -->
+      <a class="item" data-tab="coinflip">
+        <img src="/assets/img/games/coinflip/menu.png"> Coinflip
+        <span class="status"><i class="hc"></i> 0</span>
+      </a>
+      <a class="item" data-tab="betting">
+        <img src="/assets/img/games/betting/menu.png"> eSports
+      </a>
+    </div>
+  </div>
+  <div class="section section-content">
+    <div class="ui tab inner coinflip" data-tab="coinflip">
+      <div class="info-meta">
+        <span class="howto"><i class="question circle icon"></i> How to Play</span>
+        <span class="provably-fair"><i class="lock icon"></i> Provably Fair</span>
+        <!-- <span class="mute"><i class="volume up icon"></i> Mute Game</span> -->
+      </div>
+      <div class="ui container">
+
+        <img src="/assets/img/games/coinflip/logo.png" class="logo">
+
+        <div class="ui stackable grid game">
+          <div class="twelve wide column games-container">
+            <div class="ui segment">
+              <div class="header">
+                <span class="title">Current Coinflips</span>
+                <span class="create" onclick="coinflip.create()"><i class="pencil icon"></i> Create</span>
+              </div>
+              <table></table>
+            </div>
+
+          </div>
+          <div class="four wide column info">
+            <div class="ui segment stats">
+              <h1 class="ui center aligned header">Stats</h1>
+              <div class="ui statistic">
+                <div class="value total-count">
+                  0
+                </div>
+                <div class="label">
+                  Current Coinflips
+                </div>
+              </div>
+              <div class="ui statistic">
+                <div class="value total-value">
+                  0
+                </div>
+                <div class="label">
+                  Total Value
+                </div>
+              </div>
+            </div>
+            <div class="ui segment history">
+              <h1 class="ui center aligned header">History</h1>
+              <table></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui tab inner roulette active" data-tab="roulette">
+      <div class="info-meta">
+        <span class="howto"><i class="question circle icon"></i> How to Play</span>
+        <span class="provably-fair"><i class="lock icon"></i> Provably Fair</span>
+      </div>
+      <div class="ui container">
+        <img src="/assets/img/games/roulette/logo.png" class="logo">
+
+        <div class="history">
+          Previous Rolls
+          <div class="list"></div>
+        </div>
+
+        <div class="segment roll">
+          <div class="overlay on">
+            <div class="content"></div>
+          </div>
+          <div class="list"></div>
+          <div class="bar"></div>
+        </div>
+
+        <div class="segment wager">
+          <div class="ui action input">
+            <input type="text" placeholder="Enter an amount..">
+            <button class="ui button" data-value="clear">Clear</button>
+            <button class="ui button" data-value="+ 10">+10</button>
+            <button class="ui button" data-value="+ 50">+50</button>
+            <button class="ui button" data-value="+ 100">+100</button>
+            <button class="ui button mobile" data-value="half">1/2</button>
+            <button class="ui button mobile" data-value="* 2">x2</button>
+            <button class="ui button" data-value="max">Max</button>
+          </div>
+        </div>
+
+        <div class="ui stackable three column grid bet-panels">
+          <div class="column panel">
+            <div class="ui segment red" data-selection="0">
+              <div class="header">
+                Red (even)
+                <div class="total"></div>
+              </div>
+              <table class="entries"></table>
+            </div>
+          </div>
+          <div class="column panel">
+            <div class="ui segment blue" data-selection="2">
+              <div class="header">
+                Blue (0)
+                <div class="total"></div>
+              </div>
+              <table class="entries"></table>
+            </div>
+          </div>
+          <div class="column panel">
+            <div class="ui segment black" data-selection="1">
+              <div class="header">
+                Black (odd)
+                <div class="total"></div>
+              </div>
+              <table class="entries"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui tab inner betting" data-tab="betting">
+      <div class="info-meta">
+        <span class="howto"><i class="question circle icon"></i> How to Play</span>
+      </div>
+
+      <div class="ui container">
+
+        <img src="/assets/img/games/betting/logo.png" class="logo">
+
+        <!-- game logic  -->
+
+        <div class="game">
+          <div class="ui segment">
+            <div class="header">
+              <div class="ui stackable grid">
+                <div class="sixteen wide column filter-col">
+                  <div class="type">
+                    <span>
+                              Show me
+                              <div class="ui inline dropdown">
+                                <div class="text">
+                                  upcoming
+                                </div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                  <div class="item">
+                                    upcoming
+                                  </div>
+                                  <div class="item">
+                                    live
+                                  </div>
+                                  <!-- <div class="item">
+                                    my
+                                  </div> -->
+                                </div>
+                              </div>
+                              matches
+                            </span>
+                  </div>
+                  <div class="games">
+                    <span>
+                              <div class="ui inline multiple selection dropdown">
+                                <div class="text">
+                                  4
+                                </div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                  <div class="item" data-value="dota2">
+                                    <img src="/assets/img/games/dota-icon.png">
+                                    Dota 2
+                                  </div>
+                                  <div class="item" data-value="leagueoflegends">
+                                    <img src="/assets/img/games/lol-icon.png">
+                                    League of Legends
+                                  </div>
+                                  <div class="item" data-value="counterstrike_go">
+                                    <img src="/assets/img/games/csgo-icon.png">
+                                    CS:GO
+                                  </div>
+                                  <div class="item" data-value="overwatch">
+                                    <img src="/assets/img/games/ow-icon.png">
+                                    Overwatch
+                                  </div>
+                                </div>
+                              </div>
+                              game<span class="plural">s</span> selected
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ui active loading tab matches-container"></div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="ui tab inner jackpot" data-tab="jackpot">
+      <div class="info-meta">
+        <span class="howto"><i class="question circle icon"></i> How to Play</span>
+        <span class="provably-fair"><i class="lock icon"></i> Provably Fair</span>
+      </div>
+      <div class="ui container">
+        <img src="/assets/img/games/jackpot/logo.png" class="logo">
+        <div class="ui stackable grid game">
+          <div class="sixteen wide mobile  sixteen wide tablet  twelve wide computer  twelve wide widescreen  column">
+            <div class="ui segment status">
+              <div class="ui top attached tabular menu">
+                <a class="item active" data-tab="jackpot-small">Small</a>
+                <a class="item" data-tab="jackpot-mid">Medium</a>
+                <a class="item" data-tab="jackpot-large">Large</a>
+              </div>
+              <div class="ui three column divided grid">
+                <div class="row">
+                  <div class="ui three statistics">
+                    <div class="ui mini statistic">
+                      <div class="value timer">
+                        0
+                      </div>
+                      <div class="label">
+                        Timer
+                      </div>
+                    </div>
+                    <div class="ui tiny statistic">
+                      <div class="value item-count">
+                        <span>0</span><small>/0</small>
+                      </div>
+                      <div class="label">
+                        Items This Round
+                      </div>
+                    </div>
+                    <div class="ui tiny statistic">
+                      <div class="value pot-worth">
+                        0 <i class="hc"></i>
+                      </div>
+                      <div class="label">
+                        Pot Total
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui bottom attached progress indicating timer-progress">
+                <div class="bar"></div>
+              </div>
+            </div>
+            <div class="pot-roll" style="display: none">
+              <div class="line"></div>
+              <div class="entrylist"></div>
+            </div>
+            <div class="pot-items"></div>
+          </div>
+          <div class="sixteen wide mobile  sixteen wide tablet  four wide computer  four wide widescreen  column">
+            <button class="ui fluid button enter-btn">
+                  Enter Jackpot
+                </button>
+            <div class="items pot-entries"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var currentGamesTab = 'roulette'
+  $(function() {
+    // if(user.admin > 0 || user.id === 'f02b1733-fd2c-409e-ae5c-4288338ce8ee' || user.id === '47a0cc57-d6ac-430d-8c05-31723a3fbc51') {
+    //   $('.tab.inner.jackpot').attr('data-tab', 'jackpot')
+    // }
+
+    $('.games-menu .item').tab({
+      onLoad: function(tab) {
+        console.log('changed game tab', tab)
+        currentGamesTab = tab
+        switch (tab) {
+          case 'coinflip':
+            coinflip.init()
+            coinflip.load()
+            coinflip.history()
+            roulette.reset()
+            break
+
+          case 'roulette':
+            roulette.init()
+            roulette.load()
+            roulette.history()
+            break
+
+          case 'jackpot':
+            jackpot.init()
+            jackpot.load()
+            roulette.reset()
+            break
+
+          case 'betting':
+            betting.init()
+            betting.load()
+            break
+
+          default:
+            route.change('home')
+        }
+      }
+    })
+    roulette.init()
+    roulette.load()
+    roulette.history()
+
+  })
+</script>

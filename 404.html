@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" lang="en">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+		<title>Hyperdraft - The next Winner could be You</title>
+		<meta name="description" content="CSGOCrush is an all new, built up from scratch, gambling website for CSGO items.">
+		<meta name="keywords" content="csgo,crush,gambling,gaming,games,roulette,casino,skins,free,counter,strike,jackpot">
+		<link rel="stylesheet" type="text/css" href="/assets/semantic/semantic.min.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/assets/css/defaults.css">
+		<link rel="stylesheet/less" type="text/css" href="/assets/css/auxil/404.less">
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+		<script>
+	      less = {
+	        async: true
+	      };
+	    </script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.6.1/less.min.js"></script>
+		<script src="/assets/semantic/semantic.min.js"></script>
+	</head>
+	<body ondragstart="return false" class="aux-body">
+		<div class="center-vertical four">
+			<h1 class="animated fadeInUp">404</h1>
+		</div>
+	</body>
+	<script>
+		$(function(){
+			setTimeout(function(){
+				$('.animated').fadeOut(function(){
+					$('.animated').removeClass('fadeInUp');
+					$('.animated').text('<');
+					$('.animated').addClass('bounceIn');
+					$('.animated').show();
+					setTimeout(function(){
+						window.history.back();
+					}, 500);
+
+					setTimeout(function(){
+						location.href = "https://hyperdraft.com"
+					}, 1500);
+				});
+			}, 1500);
+		});
+	</script>
+</html>

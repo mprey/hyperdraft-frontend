@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" lang="en">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-control: max-age=2592000" content="public">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <title>HyperDraft :: Make Your Predictions Count</title>
+  <meta name="description" content="Coinflip, Jackpot, Roulette and Match Betting ">
+  <meta name="keywords" content="csgo,hyperdraft,hyper,draft,gambling,gaming,games,roulette,casino,skins,free,counter,strike,jackpot,counterstrike,globaloffensive,csgoworld,csgostrong,csgo500,csgoroll,drakemoon,betsgg,csgofast,csgoshuffle,csgohunt,csgobig,societygg,hellcase,drakewing">
+  <link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+  <link rel="icon" sizes="16x16 32x32 64x64" href="assets/img/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="196x196" href="assets/img/favicon/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="160x160" href="assets/img/favicon/favicon-160.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon/favicon-96.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon/favicon-64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16.png">
+  <link rel="apple-touch-icon" href="assets/img/favicon/favicon-57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/img/favicon/favicon-114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/img/favicon/favicon-72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/img/favicon/favicon-144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/img/favicon/favicon-60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon/favicon-120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon/favicon-76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon/favicon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/favicon-180.png">
+  <meta name="msapplication-TileColor" content="#eee">
+  <meta name="msapplication-TileImage" content="assets/img/favicon/favicon-144.png">
+  <meta name="msapplication-config" content="assets/img/favicon/browserconfig.xml">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" type="text/css" href="assets/css/defaults.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.2/toastr.min.css">
+  <link rel="stylesheet" href="assets/css/odometer.minimal.min.css">
+  <link rel="stylesheet" href="assets/semantic/range.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/compiled/style.min.css">
+</head>
+
+<body ondragstart="return false">
+  <div class="preloader">
+    <img src="assets/img/loading.gif" style="display: none">
+  </div>
+
+  <div class="user-profile-modal" id="userProfileModal"></div>
+  <ul class="chat-contextmenu" id="chatContextMenu">
+    <li class="info"><img src=""></li>
+    <li data-action="pm"><i class="mail icon"></i> Private Message</li>
+    <li data-action="transfer"><i class="gift icon"></i> Gift HyperCredits</li>
+    <li data-action="mention"><i class="at icon"></i> Mention</li>
+  </ul>
+
+  <div class="sidebar-nav">
+    <div class="toggle" onclick="toggleSidebarNav('click')">
+      <i class="material-icons">chevron_left</i>
+    </div>
+    <div class="branding" onclick="route.change('games')">
+      <img src="assets/img/logo.png" class="big-logo">
+      <img src="assets/img/logo_small.png" class="small-logo">
+    </div>
+    <div class="ui mobile only mobile-alert">
+      <p>You are browsing HyperDraft on a mobile device. Some features have been restricted.</p>
+    </div>
+    <div class="profile-info" style="display: none"></div>
+    <div class="login">
+      <a href="/auth/steam">
+        <div class="button">
+          <i class="steam icon"></i> <span>Login via Steam</span>
+        </div>
+      </a>
+    </div>
+    <div class="menu">
+      <!-- <div class="header header-status status-bad">
+					<div class="title"><i class="warning sign icon"></i> GLOBAL ALERT</div>
+					 Trades are currently delayed.
+				</div> -->
+      <div class="header">menu <i class="material-icons menu-toggle open" onclick="toggleSidebarNavMenu()">keyboard_arrow_down</i></div>
+      <div class="inner">
+        <div class="menu-item games" onclick="route.change('games')">
+          <span>Games</span>
+          <div class="icon">
+            <img src="assets/img/menu/games.png">
+          </div>
+        </div>
+
+        <div class="menu-item account" onclick="sidebar.toggle('settings')" style="display: none">
+          <span>Account</span>
+          <div class="icon">
+            <img src="assets/img/menu/account.png">
+          </div>
+        </div>
+        <div class="menu-item funds" onclick="sidebar.toggle('deposit')" style="display: none">
+          <span>Deposit</span>
+          <div class="icon">
+            <img src="assets/img/menu/funds.png">
+          </div>
+        </div>
+
+        <div class="menu-item stats" onclick="route.change('stats')">
+          <span>Statistics</span>
+          <div class="icon">
+            <img src="assets/img/menu/stats.png">
+          </div>
+        </div>
+        <div class="menu-item shop" onclick="route.change('shop')">
+          <span>Shop</span>
+          <div class="icon">
+            <img src="assets/img/menu/shop.png">
+          </div>
+        </div>
+        <div class="menu-item support" onclick="modal.open('support')">
+          <span>Support</span>
+          <div class="icon">
+            <img src="assets/img/menu/support.png">
+          </div>
+        </div>
+      </div>
+
+      <div class="header header-chat">
+        <div class="online-users-div">
+          <i class="circle icon"></i> <span>0</span>
+        </div>
+        Chat
+        <i class="alarm outline icon chat-pm-toggle" title="PM & Mentions only"></i>
+        <i class="material-icons chat-toggle open">keyboard_arrow_down</i>
+      </div>
+    </div>
+    <div class="chat">
+      <div class="ui mobile-alert chat-mobile-alert" style="display: none">
+        <p>Your browser's height is too small for chat.</p>
+      </div>
+      <div class="chat-messages">
+        <div class="announcement-bar"></div>
+        <div class="hover-bar">chat paused</div>
+        <div class="faded-bar"></div>
+        <div class="messages"></div>
+      </div>
+      <div class="chat-input">
+        <div class="ui icon fluid input">
+          <i class="question link icon"></i>
+          <input type="text" maxlength="255" id="chatInput" placeholder="type your message here">
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="data">
+        <div class="social">
+          <a href="https://twitter.com/HyperDraft" target="_blank"><i class="twitter icon"></i></a>
+          <a href="https://facebook.com/HyperDraft" target="_blank"><i class="facebook icon"></i></a>
+          <a href="https://www.reddit.com/r/hyperdraft" target="_blank"><i class="reddit alien icon"></i></a>
+          <a href="http://steamcommunity.com/groups/hyperdraft" target="_blank"><i class="steam icon"></i></a>
+          <a href="https://vk.com/hyperdraft" target="_blank"><i class="vk icon"></i></a>
+        </div>
+
+        <div class="copyright">&copy; HyperDraft 2016</div>
+        <div class="legal">
+          <a href="pages/terms.html" target="_blank">Terms</a>
+          <a href="pages/privacy.html" target="_blank">Privacy</a>
+          <a href="http://www.responsiblegambling.org/" target="_blank">Responsible Gaming</a>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  <div class="sidebar-action">
+    <div class="close" onclick="sidebar.toggle()">
+      <i class="material-icons">close</i>
+    </div>
+
+    <div class="ui top attached tabular menu">
+      <!-- <a class="item" data-tab="sidebar-inventory-soon" data-position="bottom center" data-tooltip="Coming Soon"><i class="material-icons">archive</i></a> -->
+      <a class="item active" data-tab="sidebar-deposit" data-position="bottom center" data-tooltip="Steam Inventory"><i class="material-icons">add_circle</i></a>
+      <a class="item" data-tab="sidebar-settings" data-position="bottom center" data-tooltip="Settings"><i class="material-icons">settings</i></a>
+      <a class="item" data-tab="sidebar-affiliates" data-position="bottom center" data-tooltip="Affiliates"><i class="material-icons">supervisor_account</i></a>
+    </div>
+
+    <div class="ui inner segment tab inventory" data-tab="sidebar-inventory">
+      <h1 class="ui huge center aligned header">Your Inventory</h1>
+      <div class="site-inventory">
+        <div class="sort">
+          <div class="ui icon fluid input">
+            <i class="refresh link icon"></i>
+            <input type="text" placeholder="Search for an item...">
+          </div>
+        </div>
+        <div class="inventory"></div>
+        <div class="stats">
+          <div class="ui three column grid">
+            <div class="column">
+              <div class="ui statistic">
+                <div class="value item-count">
+                  0
+                </div>
+                <div class="label">
+                  Item(s) Selected
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui statistic">
+                <div class="value items-value">
+                  0
+                </div>
+                <div class="label">
+                  Value (USD)
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui statistic">
+                <div class="value items-value-hc">
+                  0
+                </div>
+                <div class="label">
+                  Value (<i class="hc"></i>)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui buttons inventory-actions">
+          <div class="ui fluid button">Withdraw</div>
+          <div class="ui floating dropdown icon button">
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item"><i class="hc"></i> Convert to HyperCredits</div>
+              <div class="item">die</div>
+              <div class="item">more dying</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui inner segment tab deposit active" data-tab="sidebar-deposit">
+      <h2 class="ui huge center aligned header">Your Steam Inventory</h2>
+      <p class="desc">Minimum item value is $1.00 <br> To withdraw, your total account deposits must be over $5.00</p>
+      <div class="steam-inventory">
+        <div class="sort">
+          <div class="ui icon fluid input">
+            <i class="refresh link icon"></i>
+            <input type="text" placeholder="Search for an item...">
+          </div>
+        </div>
+        <div class="inventory"></div>
+        <div class="stats">
+          <div class="ui three column grid">
+            <div class="column">
+              <div class="ui statistic">
+                <div class="value item-count">
+                  0
+                </div>
+                <div class="label">
+                  Item(s) Selected
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui statistic">
+                <div class="value items-value">
+                  0
+                </div>
+                <div class="label">
+                  Value (USD)
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="ui statistic">
+                <div class="value items-value-hc">
+                  0
+                </div>
+                <div class="label">
+                  Value (<i class="hc"></i>)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="ui button fluid send-trade-btn"><i class="send icon"></i> Send Trade Offer</button>
+      </div>
+
+      <div class="daily-reward">
+        <h1 class="ui header">OR</h1>
+        <button class="ui button" id="dailyReward_btn" onclick="claimDailyReward()"><i class="gift icon"></i> Claim your daily HyperCredits</button>
+      </div>
+    </div>
+    <div class="ui inner segment tab settings" data-tab="sidebar-settings">
+      <div class="ui container">
+        <h1 class="ui header">Website Settings</h1>
+        <div class="ui grid container checkboxes">
+          <div class="sixteen wide column">
+            <div class="ui toggle checkbox webSettings-confirmations">
+              <input type="checkbox" name="example">
+              <label>Enable Desktop Notifications</label>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui toggle checkbox webSettings-sounds">
+              <input type="checkbox" name="example">
+              <label>Disable Sounds</label>
+            </div>
+          </div>
+        </div>
+        <div class="webSettings-volume-slider">
+          <label>Sounds Volume: <span class="val"></span></label>
+          <div class="ui range sounds-volume-slider"></div>
+        </div>
+
+        <h1 class="ui header">Account Settings</h1>
+        <form class="ui form">
+          <div class="field">
+            <label>Email</label>
+            <div class="ui icon fluid input" data-tooltip="Your email is not confirmed, click on the warning icon to resend a confirmation.">
+              <i class="warning sign link icon"></i>
+              <input type="email" id="email" name="email" placeholder="Your Email">
+            </div>
+          </div>
+          <div class="field">
+            <label>Steam Trade URL</label>
+            <input type="url" id="steam_tradeUrl" name="steam-trade-url" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=xxxx&token=xxxx">
+            <small><a href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url" target="_blank">Click here to retrieve it</a></small>
+          </div>
+        </form>
+
+        <div class="btn-container">
+          <button class="ui big button update-settings-btn">Update</button>
+        </div>
+
+        <div class="stats module">
+          <i class="material-icons">history</i>
+          <h2 class="ui center aligned header">History & Stats</h2>
+          <p class="desc">Everything you do is logged so you can see what you did at any time, whenever you want.</p>
+          <button class="ui big button" onclick="route.change('account')">View Stats</button>
+        </div>
+      </div>
+    </div>
+    <div class="ui inner segment tab affiliates" data-tab="sidebar-affiliates">
+      <h2 class="ui huge center aligned header">Affiliates Program</h2>
+      <p class="desc">
+        Our affiliate system is simple. Rewards are percentage based on rank, and rank will rise proportional to the amount of claims.
+        <span class="hascode" style="display: none">
+              When users use your code, they will receive <span class="claimBonus"></span> <i class="hc"></i>, furthermore they will receive a bonus of <span class="depositBonus"></span> on their first deposit.
+        </span>
+      </p>
+
+      <div class="affiliate-create">
+        <div class="ui action input">
+          <input type="text" placeholder="Enter a code..">
+          <button class="ui button">Create Code</button>
+        </div>
+        <small class="warning">You may only create one code, you cannot change it after it is created.</small>
+      </div>
+      <div class="affiliate-stats" style="display: none">
+        <h2 class="ui center aligned header">Level <span class="level">1</span> Affiliate</h2>
+        <div class="ui progress">
+          <div class="bar">
+            <div class="progress"></div>
+          </div>
+          <div class="label">400xp till next level</div>
+        </div>
+        <div class="info">
+          You currently earn <span class="payoutPercent"></span> <i class="hc"></i> from bets your affiliates make.
+        </div>
+        <hr class="gradient">
+        <div class="ui three column grid stats">
+          <div class="column">
+            <div class="ui statistic">
+              <div class="value code">0</div>
+              <div class="label">
+                Your Code
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui statistic">
+              <div class="value uses">0</div>
+              <div class="label">
+                Code Uses
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui statistic">
+              <div class="value earned">0</div>
+              <div class="label">
+                Earnings (<i class="hc"></i>)
+              </div>
+            </div>
+          </div>
+          <!-- <div class="column">
+                  <div class="ui statistic">
+                    <div class="value deposits">0</div>
+                    <div class="label">
+                      Deposits
+                    </div>
+                  </div>
+              </div> -->
+        </div>
+        <div class="ui two column grid actions">
+          <div class="column">
+            <button class="ui button refresh">Refresh Statistics</button>
+          </div>
+          <div class="column">
+            <button class="ui button collect">Collect Earnings</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="redeem-code module">
+        <i class="material-icons">card_giftcard</i>
+        <h2 class="ui center aligned header">Redeem a Code</h2>
+        <div class="ui action input">
+          <input type="text" placeholder="Enter a code..">
+          <button class="ui button">Redeem Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu">
+    <div class="close-btn">
+      <i class="remove icon"></i>
+    </div>
+    <div class="inner">
+      <div class="branding" onclick="route.change('games')">
+        <img src="assets/img/logo.png" class="logo">
+      </div>
+      <div class="profile-info"></div>
+      <div class="menu">
+        <a href="/auth/steam">
+          <div class="menu-item login">
+            Login / Sign Up
+          </div>
+        </a>
+        <div class="menu-item account" onclick="route.change('account')" style="display: none">
+          My Account
+        </div>
+        <div class="menu-item funds" onclick="sidebar.toggle()" style="display: none">
+          Wallet
+        </div>
+        <div class="menu-item" onclick="route.change('games')">
+          Games
+        </div>
+        <div class="menu-item" onclick="route.change('stats')">
+          Statistics
+        </div>
+        <div class="menu-item" onclick="route.change('shop')">
+          Shop
+        </div>
+
+        <div class="menu-item" onclick="zE.activate({hideOnClose: true})">
+          Support
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu-btn">
+    <i class="bars icon"></i>
+  </div>
+  <div class="page-content"></div>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/perfect-scrollbar.jquery.min.js"></script>
+  <script type="text/javascript" src="assets/semantic/range.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.2/toastr.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.4/lodash.min.js"></script>
+  <script type="text/javascript" src="assets/js/libs/jquery.mustache.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.7/odometer.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+  <script src="https://rawgit.com/zachwick/TableCSVExport/master/jquery.TableCSVExport.js" type="text/javascript"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.14.0/jquery-qrcode.min.js"></script>
+  <!-- tfw u dont use npm lul -->
+  <script src="assets/js/main.js"></script>
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-79109852-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script>
+    /*<![CDATA[*/
+    window.zEmbed || function(e, t) {
+      var n, o, d, i, s, a = [],
+        r = document.createElement("iframe");
+      window.zEmbed = function() {
+          a.push(arguments)
+        }, window.zE = window.zE || window.zEmbed, r.src = "javascript:false", r.title = "", r.role = "presentation", (r.frameElement || r).style.cssText = "display: none", d = document.getElementsByTagName("script"), d = d[d.length - 1],
+        d.parentNode.insertBefore(r, d), i = r.contentWindow, s = i.document;
+      try {
+        o = s
+      } catch (e) {
+        n = document.domain, r.src = 'javascript:var d=document.open();d.domain="' + n + '";void(0);', o = s
+      }
+      o.open()._l = function() {
+        var o = this.createElement("script");
+        n && (this.domain = n), o.id = "js-iframe-async", o.src = e, this.t = +new Date, this.zendeskHost = t, this.zEQueue = a, this.body.appendChild(o)
+      }, o.write('<body onload="document._l();">'), o.close()
+    }("https://assets.zendesk.com/embeddable_framework/main.js", "hyperdraft.zendesk.com");
+    /*]]>*/
+  </script>
+</body>
+
+</html>

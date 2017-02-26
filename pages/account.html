@@ -1,0 +1,189 @@
+<div class="inner-content account">
+  <div class="section section-content">
+    <h1 class="ui header center aligned">Account History</h1>
+
+    <div class="ui tab loading stats active" data-tab="stats">
+      <div class="ui container">
+        <div class="ui three column grid quick-stats">
+          <div class="column">
+            <div class="ui statistic">
+              <div class="value cf-won">0</div>
+              <div class="label">
+                Coinflips Won
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui statistic">
+              <div class="value bets">0</div>
+              <div class="label">
+                Bets Won
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui statistic">
+              <div class="value trades">0</div>
+              <div class="label">
+                Trades Sent
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="ui header center aligned">Logs</h1>
+
+        <div class="ui fluid accordion">
+          <!-- <div class="title">
+                        <i class="dropdown icon"></i>
+                        Pending Transactions
+                    </div>
+                    <div class="ui tab content pending-transactions-container" data-id="transactions">
+                        <button class="ui labeled icon button download-btn">
+                          <i class="download icon"></i>
+                          Export as CSV
+                        </button>
+                        <table class="ui celled padded table">
+                            <thead>
+                                <tr>
+                                    <th class="center aligned">ID</th>
+                                    <th class="center aligned">Gateway</th>
+                                    <th class="center aligned single line">Amount (USD)</th>
+                                    <th class="center aligned">Time Created</th>
+                                    <th class="center aligned">Confirmations</th>
+                                    <th class="center aligned">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div> -->
+          <div class="title">
+            <i class="dropdown icon"></i> Recent Bets
+          </div>
+          <div class="ui tab content recent-bets-container" data-id="bets">
+            <button class="ui labeled icon button download-btn">
+                          <i class="download icon"></i>
+                          Export as CSV
+                        </button>
+            <table class="ui celled padded table">
+              <thead>
+                <tr>
+                  <th class="center aligned">Game</th>
+                  <th class="center aligned single line">Bet ID</th>
+                  <th class="center aligned single line">Match ID</th>
+                  <th class="center aligned">Teams</th>
+                  <th class="center aligned">Time</th>
+                  <th class="center aligned">Bet</th>
+                  <th class="center aligned" data-tooltip="Current Odds - odds are constantly changing, this is your latest estimate.">CO</th>
+                  <th class="center aligned popup" data-tooltip="Estimated Return - odds are constantly changing, this is your latest estimate.">ER</th>
+                  <th class="center aligned" data-tooltip="Match Status">Status</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <!-- <div class="title">
+                        <i class="dropdown icon"></i>
+                        Recent Transactions
+                    </div>
+                    <div class="ui tab content recent-transactions-container" data-id="transactions">
+                        <button class="ui labeled icon button right aligned download-btn">
+                          <i class="download icon"></i>
+                          Export as CSV
+                        </button>
+                        <table class="ui celled padded table">
+                            <thead>
+                                <tr>
+                                    <th class="center aligned">ID</th>
+                                    <th class="center aligned">Gateway</th>
+                                    <th class="center aligned single line">Amount (USD)</th>
+                                    <th class="center aligned">Time Created</th>
+                                    <th class="center aligned">Time Confirmed</th>
+                                    <th class="center aligned">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div> -->
+          <div class="title">
+            <i class="dropdown icon"></i> Recent Coinflips
+          </div>
+          <div class="ui tab content recent-coinflips-container" data-id="coinflips">
+            <button class="ui labeled icon button right aligned download-btn">
+                          <i class="download icon"></i>
+                          Export as CSV
+                        </button>
+            <table class="ui celled padded table">
+              <thead>
+                <tr>
+                  <th class="center aligned">ID</th>
+                  <th class="center aligned">Side</th>
+                  <th class="center aligned single line">Wager</th>
+                  <th class="center aligned">Time Created</th>
+                  <th class="center aligned">Time Ended</th>
+                  <th class="center aligned">Status</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="title">
+            <i class="dropdown icon"></i> Recent Roulette Bets
+          </div>
+          <div class="ui tab content recent-roulette-container" data-id="roulette">
+            <button class="ui labeled icon button right aligned download-btn">
+                          <i class="download icon"></i>
+                          Export as CSV
+                        </button>
+            <table class="ui celled padded table">
+              <thead>
+                <tr>
+                  <th class="center aligned">ID</th>
+                  <th class="center aligned">Game ID</th>
+                  <th class="center aligned">Selection</th>
+                  <th class="center aligned">Wager</th>
+                  <th class="center aligned">Time</th>
+                  <th class="center aligned">Status</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="title">
+            <i class="dropdown icon"></i> Recent Steam Transactions
+          </div>
+          <div class="ui tab content recent-steam-transactions-container" data-id="steam">
+            <button class="ui labeled icon button right aligned download-btn">
+                          <i class="download icon"></i>
+                          Export as CSV
+                        </button>
+            <table class="ui celled padded table">
+              <thead>
+                <tr>
+                  <th class="center aligned">ID</th>
+                  <th class="center aligned">Type</th>
+                  <th class="center aligned">Items</th>
+                  <th class="center aligned">Time</th>
+                  <th class="center aligned">Status</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  $(function() {
+    $('.ui.accordion').accordion({
+      onOpening: function() {
+        var id = $(this).attr('data-id')
+        $(this).addClass('loading')
+        account.stats(id)
+      }
+    });
+  });
+</script>

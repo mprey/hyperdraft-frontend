@@ -1,0 +1,42 @@
+/* Import */
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+@colorAccent: #0087dc;
+@colorAccentInnactive: #131f2a;
+@colorText: #eee;
+@colorDark: #0e1319; // Navbar, Sidebar BGs
+@colorDarker: #0a0e13; // Menu Separators
+@colorLighter: #13181e; // Menu Item Icon
+@colorBackground: #141a23; // Background - not really used.
+
+@z1: 99; // Sidebars & Navbars
+@z2: 999; // Overlay
+
+@Montserrat: "Montserrat", sans-serif;
+
+body {
+	background: url('/assets/img/bg.png');
+}
+
+.center-vertical {
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    left: 0;
+    display: block;
+    margin: 0 auto;
+}
+
+.four {
+	text-align: center;
+	overflow: hidden;
+
+	h1 {
+		font-size: 20vw;
+		font-family: @Montserrat;
+		color: @colorAccent;
+		margin: 0;
+	}
+}

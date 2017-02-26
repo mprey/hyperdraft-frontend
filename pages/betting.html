@@ -1,0 +1,119 @@
+<div class="inner-content betting">
+    <div class="section section-info">
+        <div class="overlay"></div>
+        <div class="center">
+            <h1 class="ui header">Match Betting</h1>
+            <p>Place your stake on CS:GO, Overwatch, DOTA2 or League of Legends competitive matches. Be mindful of your habits!</p>
+        </div>
+        <div class="toornament">
+          <a href="https://toornament.com" target="_blank">Powered by <img src="/assets/img/toornament.png" class="logo"></a>
+        </div>
+    </div>
+    <div class="section section-menu">
+        <div class="ui stackable grid">
+            <div class="sixteen wide column filter-col">
+                <div class="type">
+                    <span>
+                      Show me
+                      <div class="ui inline dropdown">
+                        <div class="text">
+                          upcoming
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                          <div class="item">
+                            upcoming
+                          </div>
+                          <div class="item">
+                            live
+                          </div>
+                          <!-- <div class="item">
+                            my
+                          </div> -->
+                        </div>
+                      </div>
+                      matches
+                    </span>
+                </div>
+                <div class="games">
+                    <span>
+                      <div class="ui inline multiple selection dropdown">
+                        <div class="text">
+                          4
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                          <div class="item" data-value="dota2">
+                            <img src="/assets/img/games/dota-icon.png">
+                            Dota 2
+                          </div>
+                          <div class="item" data-value="leagueoflegends">
+                            <img src="/assets/img/games/lol-icon.png">
+                            League of Legends
+                          </div>
+                          <div class="item" data-value="counterstrike_go">
+                            <img src="/assets/img/games/csgo-icon.png">
+                            CS:GO
+                          </div>
+                          <div class="item" data-value="overwatch">
+                            <img src="/assets/img/games/ow-icon.png">
+                            Overwatch
+                          </div>
+                        </div>
+                      </div>
+                      game<span class="plural">s</span> selected
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section section-content">
+        <div class="ui tab matches matches-featured active">
+            <div class="ui stackable grid matches-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var filter = {
+        games: ['leagueoflegends','counterstrike_go','dota2','overwatch'],
+        type: "upcoming"
+    };
+
+    $(function(){
+
+        var gameFilterCooldown;
+        betting.load(filter);
+
+        $('.type .ui.dropdown').dropdown({
+            onChange: function(value) {
+                filter.type = value;
+                betting.load(filter);
+            }
+        });
+
+        $('.games .ui.dropdown').dropdown({
+            useLabels: false,
+            onChange: function(value) {
+                if(!value) {
+                    $('.games .ui.dropdown .text').text('4');
+                    filter.games = ['leagueoflegends','counterstrike_go','dota2','overwatch'];
+                } else {
+                    if((value.split(',')).length == 1) {
+                        $('.games span.plural').hide();
+                    } else {
+                        $('.games span.plural').show();
+                    }
+                    filter.games = value.split(',');
+                }
+
+                clearTimeout(gameFilterCooldown);
+                gameFilterCooldown = setTimeout(function(){
+                    betting.load(filter);
+                }, 500); 
+            },
+            message: {
+              count: '{count}'
+            }
+        });
+    });
+</script>
