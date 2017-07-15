@@ -1,8 +1,6 @@
-import io from 'socket.io-client'
-import { socket } from '../config'
+import SocketClient from './util/socketClient'
+import config from 'config'
 
-const socket = io(socket.url)
+const client = new SocketClient(config.socket.url)
 
-socket.on('connected', () => console.log('connected'))
-
-export default socket
+export default client
