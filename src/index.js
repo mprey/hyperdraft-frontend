@@ -1,4 +1,6 @@
-import './static/index.css'
+import './static/defaults.css'
+import './static/odometer.min.css'
+import './semantic/dist/semantic.min.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'

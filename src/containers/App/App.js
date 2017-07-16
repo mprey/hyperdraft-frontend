@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import classNames from 'classnames'
+import $ from 'jquery'
 
 import loading from '../../static/img/loading.gif'
 import bigLogo from '../../static/img/logo.png'
@@ -10,10 +13,26 @@ import statsImage from '../../static/img/menu/stats.png'
 import shopImage from '../../static/img/menu/shop.png'
 import supportImage from '../../static/img/menu/support.png'
 
+import './App.css'
+
 class App extends Component {
 
   constructor(props) {
     super(props)
+
+    this.sidebarNavLock = false
+
+    this.state = {
+      loading: true,
+      width: 0,
+      height: 0,
+      sidebarNavOpen: false,
+      sidebarNavMenuOpen: true
+    }
+
+    this.toggleSidebarNav = this.toggleSidebarNav.bind(this)
+    this.updateLayout = this.updateLayout.bind(this)
+    this.toggleSidebarNavMenu = this.toggleSidebarNavMenu.bind(this)
   }
 
   login() {
@@ -24,14 +43,98 @@ class App extends Component {
     window.zE((zE) => {
       window.zE.hide()
     })
+    window.addEventListener('resize', this.updateLayout)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateLayout)
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1200)
+    this.updateLayout()
+  }
+
+  toggleSidebarNav(ignoreLock) {
+    this.sidebarNavLocked = (this.state.sidebarNavOpen && !ignoreLock) ? true : false
+    this.setState({ sidebarNavOpen: !this.state.sidebarNavOpen })
+  }
+
+  toggleSidebarNavChat() {
+    if ($('.sidebar-nav .chat-toggle').hasClass('open')) {
+      $('.sidebar-nav .chat-toggle').removeClass('open')
+      $('.sidebar-nav .chat').finish().slideUp()
+    } else {
+      $('.sidebar-nav .chat-toggle').addClass('open')
+      $('.sidebar-nav .chat').finish().slideDown()
+    }
+  }
+
+  toggleSidebarNavMenu() {
+    if ($('.sidebar-nav .menu .menu-toggle').hasClass('open')) {
+  		$('.sidebar-nav .menu .menu-toggle').removeClass('open')
+  		$('.sidebar-nav .menu .inner').finish().slideUp(() => {
+  			this.updateLayout()
+  		})
+  	} else {
+  		$('.sidebar-nav .menu .menu-toggle').addClass('open')
+  		$('.sidebar-nav .menu .inner').finish().slideDown(() => {
+  			this.updateLayout()
+  		})
+  	}
+  }
+
+  updateLayout() {
+    const winHeight = $(window).height()
+  	const winWidth = $(window).width()
+    const { sidebarNavOpen } = this.state
+
+  	if (!this.sidebarNavLock && ((winWidth < 600 && sidebarNavOpen) || (winWidth > 600 && !sidebarNavOpen))) {
+  		this.toggleSidebarNav(true)
+  	}
+
+  	// Sidebar
+  	var sidebarHeightInner = 0
+  	$('.sidebar-nav').children().not('.chat').each(function() {
+  		sidebarHeightInner += $(this).height()
+  	})
+  	// improve
+  	if ($('.sidebar-nav').height() < 580 && $('.sidebar-nav .menu-toggle').hasClass('open')) {
+  		$('.sidebar-nav').css('overflow-y', 'scroll').perfectScrollbar()
+  		$('.sidebar-nav .chat-messages, .sidebar-nav .chat-input').slideUp()
+  		$('.sidebar-nav .chat-mobile-alert').slideDown()
+  	} else if ($('.sidebar-nav').height() > 580) {
+  		$('.sidebar-nav').css('overflow-y', 'hidden').perfectScrollbar('destroy')
+  		$('.sidebar-nav .chat-messages, .sidebar-nav .chat-input').slideDown()
+  		$('.sidebar-nav .chat-mobile-alert').slideUp()
+  		$('.sidebar-nav .chat-messages .messages').css('height', ($('.sidebar-nav').height() - sidebarHeightInner) - 12)
+  	}
+
+  	if ($('body').children('.action-modal').length > 0) {
+  		if (winHeight < $('.action-modal .modal').height()) {
+  			$('.action-modal').css('display', 'block')
+  		} else {
+  			$('.action-modal').css('display', 'flex')
+  		}
+  	}
   }
 
   render() {
+    const { sidebarNavOpen } = this.state
     return (
       <div className="App">
-        <div className="preloader">
-          <img src={loading} style={{display: 'none'}} alt="loading" />
-        </div>
+        <ReactCSSTransitionGroup
+            transitionName="fade-gif"
+            transitionEnterTimeout={0}
+            transitionLeaveTimeout={1000}>
+            {this.state.loading &&
+              <div className="preloader">
+                <img src={loading} alt="loading" />
+              </div>
+            }
+          </ReactCSSTransitionGroup>
         <div className="user-profile-modal" id="userProfileModal"></div>
         <ul className="chat-contextmenu" id="chatContextMenu">
           <li className="info"><img src="" alt="empty" /></li>
@@ -39,11 +142,11 @@ class App extends Component {
           <li data-action="transfer"><i className="gift icon"></i> Gift HyperCredits</li>
           <li data-action="mention"><i className="at icon"></i> Mention</li>
         </ul>
-        <div className="sidebar-nav">
-          <div className="toggle" /*onClick="toggleSidebarNav('click')"*/>
+        <div className={classNames({ 'sidebar-nav': true, 'collapsed': !sidebarNavOpen })}>
+          <div className={classNames({ 'toggle': true, 'toggled': !sidebarNavOpen })} onClick={this.toggleSidebarNav}>
             <i className="material-icons">chevron_left</i>
           </div>
-          <div className="branding" /*onClick="route.change('games')"*/>
+          <div className={classNames({ 'branding': true, 'closed': !sidebarNavOpen })} /*onClick="route.change('games')"*/>
             <img src={bigLogo} className="big-logo" alt="bigLogo" />
             <img src={smallLogo} className="small-logo" alt="smallLogo" />
           </div>
@@ -63,7 +166,7 @@ class App extends Component {
               <div className="title"><i className="warning sign icon"></i> GLOBAL ALERT</div>
                 Trades are currently delayed.
               </div>*/}
-            <div className="header">menu <i className="material-icons menu-toggle open" /*onClick="toggleSidebarNavMenu()"*/>keyboard_arrow_down</i></div>
+            <div className="header">menu <i className="material-icons menu-toggle open" onClick={this.toggleSidebarNavMenu}>keyboard_arrow_down</i></div>
             <div className="inner">
               <div className="menu-item games" /*onClick="route.change('games')"*/>
                 <span>Games</span>
@@ -108,7 +211,7 @@ class App extends Component {
               </div>
               Chat
               <i className="alarm outline icon chat-pm-toggle" title="PM & Mentions only"></i>
-              <i className="material-icons chat-toggle open">keyboard_arrow_down</i>
+              <i className="material-icons chat-toggle open" onClick={this.toggleSidebarNavChat}>keyboard_arrow_down</i>
             </div>
           </div>
           <div className="chat">
@@ -430,7 +533,7 @@ class App extends Component {
                 Shop
               </div>
 
-              <div className="menu-item" /*onClick="zE.activate({hideOnClose: true})"*/>
+              <div className="menu-item" onClick={null/*window.zE.activate({hideOnClose: true})*/}>
                 Support
               </div>
             </div>
@@ -439,10 +542,12 @@ class App extends Component {
         <div className="mobile-menu-btn">
           <i className="bars icon"></i>
         </div>
-        <div className="page-content"></div>
+        <div className={classNames({ 'page-content': true, 'nav-collapsed': !sidebarNavOpen })}></div>
       </div>
     )
   }
 }
+
+require('perfect-scrollbar/jquery')($)
 
 export { App }
