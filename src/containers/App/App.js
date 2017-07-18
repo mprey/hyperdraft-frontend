@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import classNames from 'classnames'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import client from '../../socket'
 import $ from 'jquery'
+
+import {
+  loadAuth,
+  login
+} from '../../actions'
 
 import loading from '../../static/img/loading.gif'
 import bigLogo from '../../static/img/logo.png'
@@ -23,9 +32,6 @@ class App extends Component {
     this.sidebarNavLock = false
 
     this.state = {
-      loading: true,
-      width: 0,
-      height: 0,
       sidebarNavOpen: false,
       sidebarNavMenuOpen: true
     }
@@ -35,33 +41,38 @@ class App extends Component {
     this.toggleSidebarNavMenu = this.toggleSidebarNavMenu.bind(this)
   }
 
-  login() {
-    console.log('auth login attempt')
-  }
-
   componentWillMount() {
+    /* Hide the zenDesk support system on App mount */
     window.zE((zE) => {
       window.zE.hide()
     })
+
+    /* Listen to screen resize to adjust sidebar layout */
     window.addEventListener('resize', this.updateLayout)
+
+    /* Load auth data from back-end on initial load */
+    if (!this.props.auth.loaded) {
+      this.props.loadAuth()
+    }
   }
 
   componentWillUnmount() {
+    /* Unregister event listeners on unmount */
     window.removeEventListener('resize', this.updateLayout)
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loading: false })
-    }, 1200)
+    /* Initially update the layout to adjust to screen sizes */
     this.updateLayout()
   }
 
+  /* Display the full sidebar or the minified version */
   toggleSidebarNav(ignoreLock) {
     this.sidebarNavLocked = (this.state.sidebarNavOpen && !ignoreLock) ? true : false
     this.setState({ sidebarNavOpen: !this.state.sidebarNavOpen })
   }
 
+  /* Pre-existing code */
   toggleSidebarNavChat() {
     if ($('.sidebar-nav .chat-toggle').hasClass('open')) {
       $('.sidebar-nav .chat-toggle').removeClass('open')
@@ -72,6 +83,7 @@ class App extends Component {
     }
   }
 
+  /* Pre-existing code */
   toggleSidebarNavMenu() {
     if ($('.sidebar-nav .menu .menu-toggle').hasClass('open')) {
   		$('.sidebar-nav .menu .menu-toggle').removeClass('open')
@@ -86,6 +98,7 @@ class App extends Component {
   	}
   }
 
+  /* Pre-existing code */
   updateLayout() {
     const winHeight = $(window).height()
   	const winWidth = $(window).width()
@@ -129,7 +142,7 @@ class App extends Component {
             transitionName="fade-gif"
             transitionEnterTimeout={0}
             transitionLeaveTimeout={1000}>
-            {this.state.loading &&
+            {this.props.auth.loading &&
               <div className="preloader">
                 <img src={loading} alt="loading" />
               </div>
@@ -155,7 +168,7 @@ class App extends Component {
           </div>
           <div className="profile-info" style={{display: 'none'}}></div>
           <div className="login">
-            <a onClick={this.login}>
+            <a onClick={this.props.login}>
               <div className="button">
                 <i className="steam icon"></i> <span>Login via Steam</span>
               </div>
@@ -512,7 +525,7 @@ class App extends Component {
             </div>
             <div className="profile-info"></div>
             <div className="menu">
-              <a onClick={this.login}>
+              <a onClick={this.props.login}>
                 <div className="menu-item login">
                   Login / Sign Up
                 </div>
@@ -550,4 +563,20 @@ class App extends Component {
 
 require('perfect-scrollbar/jquery')($)
 
-export { App }
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    loadAuth,
+    login
+  }, dispatch)
+}
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App))
