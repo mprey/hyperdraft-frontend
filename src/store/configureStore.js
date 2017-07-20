@@ -12,7 +12,8 @@ const createFinalStore = (history) => {
       routerMiddleware(history),
       socketMiddleware(),
       thunk,
-      logger),
+      //logger
+    ),
   )(createStore)
 }
 

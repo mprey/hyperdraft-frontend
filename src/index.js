@@ -1,6 +1,7 @@
 import './static/defaults.css'
 import './static/odometer.min.css'
 import './semantic/dist/semantic.min.css'
+import 'jquery-ui'
 
 import React from 'react'
 import ReactDOM from 'react-dom'

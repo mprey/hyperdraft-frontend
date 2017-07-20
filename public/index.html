@@ -77,5 +77,14 @@
       }("https://assets.zendesk.com/embeddable_framework/main.js", "hyperdraft.zendesk.com");
       /*]]>*/
     </script>
+    <script>
+      zE(function() {
+        zE.hide()
+        window.showZE = () => {
+          console.log('show ZE')
+          zE.activate({hideOnClose: true})
+        }
+      })
+    </script>
   </body>
 </html>
