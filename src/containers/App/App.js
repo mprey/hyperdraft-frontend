@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import client from '../../socket'
+import Routes from '../../routes'
 import $ from 'jquery'
 
 import {
@@ -16,9 +17,12 @@ import {
 
 import {
   NavbarProfile,
-  NavbarProfileMobile,
-  Sidebar
+  NavbarProfileMobile
 } from '../../components'
+
+import {
+  Sidebar
+} from '../'
 
 import loading from '../../static/img/loading.gif'
 import bigLogo from '../../static/img/logo.png'
@@ -204,6 +208,7 @@ class App extends Component {
         </ReactCSSTransitionGroup>
         {!this.props.auth.loading &&
           <div>
+            <Routes />
             <div className="user-profile-modal" id="userProfileModal"></div>
             <ul className="chat-contextmenu" id="chatContextMenu">
               <li className="info"><img src="" alt="empty" /></li>

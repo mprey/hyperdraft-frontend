@@ -1,7 +1,7 @@
 import socket from '../../socket'
 
 export default function socketMiddleware() {
-  return ({ dispatch, getState }) => next => action => {
+  return ({ getState, dispatch }) => next => action => {
     if (typeof action === 'function') {
       return action(dispatch, getState);
     }

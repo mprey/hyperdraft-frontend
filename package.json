@@ -20,6 +20,7 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui": "^2.2.11",
     "socket.io-client": "^2.0.3",
+    "toastr": "^2.1.2",
     "uuid": "^3.1.0",
     "zepto": "^1.2.0"
   },

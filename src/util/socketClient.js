@@ -25,6 +25,19 @@ export default class SocketClient {
     })
   }
 
+  emitAction(event, data) {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) return reject('No socket connection.')
+
+      return this.socket.emit('action', event, data, (error, response) => {
+        if (error) {
+          return reject(error)
+        }
+        return resolve(response)
+      })
+    })
+  }
+
   /* Async socket events for redux */
   emit(event, data) {
     return new Promise((resolve, reject) => {

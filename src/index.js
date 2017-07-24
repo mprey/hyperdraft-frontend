@@ -1,7 +1,10 @@
 import './static/defaults.css'
 import './static/odometer.min.css'
+import './static/range.css'
 import './semantic/dist/semantic.min.css'
+import 'toastr/build/toastr.css'
 import 'jquery-ui'
+import './util/libs'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
