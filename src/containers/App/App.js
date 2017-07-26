@@ -229,10 +229,6 @@ class App extends Component {
               </div>
               { this.renderUserProfile() }
               <div className="menu">
-              {/*<div className="header header-status status-bad">
-                  <div className="title"><i className="warning sign icon"></i> GLOBAL ALERT</div>
-                    Trades are currently delayed.
-                  </div>*/}
                 <div className="header">menu <i className="material-icons menu-toggle open" onClick={this.toggleSidebarNavMenu}>keyboard_arrow_down</i></div>
                 <div className="inner">
                   <div className="menu-item games" /*onClick="route.change('games')"*/>
@@ -357,7 +353,9 @@ class App extends Component {
             <div className="mobile-menu-btn">
               <i className="bars icon"></i>
             </div>
-            <div className={classNames({ 'page-content': true, 'nav-collapsed': !sidebarNavOpen })}></div>
+            <div className={classNames({ 'page-content': true, 'nav-collapsed': !sidebarNavOpen })}>
+              <Routes />
+            </div>
           </div>
         }
       </div>

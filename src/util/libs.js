@@ -13,7 +13,7 @@ toastr.options.closeMethod = 'fadeOut'
 toastr.options.preventDuplicates = true
 toastr.options.timeOut = 4000
 toastr.options.extendedTimeOut = 800
-toastr.options.progressBar = true
+toastr.options.progressBar = false
 
 $.extend({
   playSound: function(file) {

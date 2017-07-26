@@ -10,7 +10,7 @@ class NavbarProfileMobile extends Component {
         <div className="column">
           <div className="data">
             <div className="name">{this.props.user.username}</div>
-            <div className="balance"><span className="acc-balance">{this.props.user.balance}</span> <i className="hc"></i></div>
+            <div className="balance"><span className="acc-balance">0</span> <i className="hc"></i></div>
             <div className="logout" onClick={this.props.logout}>logout</div>
           </div>
         </div>
