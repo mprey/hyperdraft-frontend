@@ -14,7 +14,8 @@ import {
   loadInventory,
   createAffiliateCode,
   redeemAffiliateCode,
-  loadAffiliateStats
+  loadAffiliateStats,
+  claimAffiliateBalance
 } from '../actions'
 
 class Sidebar extends Component {
@@ -24,7 +25,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { loadAffiliateStats, redeemAffiliateCode, affiliate, setCurrentTab, currentTab, isOpen, inventory, user, loadInventory, createAffiliateCode } = this.props
+    const { claimAffiliateBalance, loadAffiliateStats, redeemAffiliateCode, affiliate, setCurrentTab, currentTab, isOpen, inventory, user, loadInventory, createAffiliateCode } = this.props
     return (
       <div className={classNames({ 'sidebar-action': true, 'open': isOpen })}>
         <div className="close" onClick={() => this.props.setCurrentTab(null)}>
@@ -37,7 +38,7 @@ class Sidebar extends Component {
         </div>
         <SettingsSidebar currentTab={currentTab} updateTradeURL={this.updateTradeURL} user={user} />
         <DepositSidebar currentTab={currentTab} loadInventory={loadInventory} inventory={inventory} />
-        <AffiliatesSidebar currentTab={currentTab} loadAffiliateStats={loadAffiliateStats} user={user} redeemAffiliateCode={redeemAffiliateCode} createAffiliateCode={createAffiliateCode} affiliate={affiliate}/>
+        <AffiliatesSidebar currentTab={currentTab} claimAffiliateBalance={claimAffiliateBalance} loadAffiliateStats={loadAffiliateStats} user={user} redeemAffiliateCode={redeemAffiliateCode} createAffiliateCode={createAffiliateCode} affiliate={affiliate}/>
       </div>
     )
   }
@@ -57,7 +58,8 @@ const mapDispatchToProps = (dispatch) => {
     loadInventory,
     createAffiliateCode,
     redeemAffiliateCode,
-    loadAffiliateStats
+    loadAffiliateStats,
+    claimAffiliateBalance
   }, dispatch)
 }
 

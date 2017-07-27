@@ -1,1 +1,3 @@
 export const UPDATE_ONLINE_COUNT = Symbol('UPDATE_ONLINE_COUNT')
+
+export const SERVER_UPDATE = Symbol('SERVER_UPDATE')

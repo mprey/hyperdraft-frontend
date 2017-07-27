@@ -1,6 +1,14 @@
 import {
-  UPDATE_ONLINE_COUNT
+  UPDATE_ONLINE_COUNT,
+  SERVER_UPDATE
 } from '../constants'
+
+export function updateClient(diff) {
+  return {
+    type: SERVER_UPDATE,
+    payload: diff
+  }
+}
 
 export function updateOnlineCount(count) {
   return {

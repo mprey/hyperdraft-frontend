@@ -10,12 +10,13 @@ class AffiliatesSidebar extends Component {
     this.createCode = this.createCode.bind(this)
     this.redeemCode = this.redeemCode.bind(this)
     this.hasCreatedCode = this.hasCreatedCode.bind(this)
+    this.claimBalance = this.claimBalance.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentTab === 'affiliates' && this.props.currentTab !== 'affiliates') {
-      if (!this.props.affiliate.loading && !this.props.affiliate.loaded && this.hasCreatedCode()) {
-        //this.props.loadAffiliateStats(this.props.user)
+      if (!this.props.affiliate.loading && !this.props.affiliate.loaded) {
+        this.props.loadAffiliateStats(this.props.user)
       }
     }
   }
@@ -44,100 +45,57 @@ class AffiliatesSidebar extends Component {
     this.props.redeemAffiliateCode(code)
   }
 
-  hasCreatedCode() {
-    const code = this.props.user ? this.props.user.partnerCode : null
-    return code && code.length > 0
+  claimBalance() {
+    const code = this.getCodeDetails()
+    this.props.claimAffiliateBalance(this.props.user, code.id)
   }
-  /*
-  renderAffiliateData() {
-    const hasCode = this.hasCreatedCode()
-    if (hasCode) {
-      if (!this.props.affiliate.loading) {
-        return (
-          <div>
-          <p className="desc">
-            Our affiliate system is simple. Rewards are percentage based on rank, and rank will rise proportional to the amount of claims.
-            <span className="hascode">
-                  <br />When users use your code, they will receive <span className="claimBonus"></span> <i className="hc"></i>, furthermore they will receive a bonus of <span className="depositBonus"></span> on their first deposit.
-            </span>
-          </p>
 
-          <div className="affiliate-stats">
-            <h2 className="ui center aligned header">Level <span className="level">1</span> Affiliate</h2>
-            <div className="ui progress">
-              <div className="bar">
-                <div className="progress"></div>
-              </div>
-              <div className="label">{`400xp till next level`}</div>
-            </div>
-            <div className="info">
-              You currently earn <span className="payoutPercent"></span> <i className="hc"></i> from bets your affiliates make.
-            </div>
-            <hr className="gradient" />
-            <div className="ui three column grid stats">
-              <div className="column">
-                <div className="ui statistic">
-                  <div className="value code">0</div>
-                  <div className="label">
-                    Your Code
-                  </div>
-                </div>
-              </div>
-              <div className="column">
-                <div className="ui statistic">
-                  <div className="value uses">0</div>
-                  <div className="label">
-                    Code Uses
-                  </div>
-                </div>
-              </div>
-              <div className="column">
-                <div className="ui statistic">
-                  <div className="value earned">0</div>
-                  <div className="label">
-                    Earnings (<i className="hc"></i>)
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ui two column grid actions">
-              <div className="column">
-                <button className="ui button refresh">Refresh Statistics</button>
-              </div>
-              <div className="column">
-                <button className="ui button collect">Collect Earnings</button>
-              </div>
-            </div>
-          </div>
-          </div>
-        )
-      }
-    } else {
+  hasCreatedCode() {
+    const { user, affiliate } = this.props
+    if (user && user.partnerCode) {
+      return affiliate.codeDetails[0]
+    }
+    return false
+  }
+
+  getCodeDetails() {
+    const { codeDetails } = this.props.affiliate
+    return codeDetails[0]
+  }
+
+  renderCodeDetails() {
+    if (this.hasCreatedCode()) {
+      const code = this.getCodeDetails()
       return (
-        <div>
-        <p className="desc">
-          Use a referral code to claim a <b>FREE $5</b> or share your own referral code and earn up to <b>5%</b>!
-        </p>
+        <div className="module module-affiliate affiliate-info-data">
+          <p><i className="add user icon" />You referred <b>{code.slaves}</b> users using code <b>{code.id}</b></p>
+          <p><i className="add to cart icon" />Number of referrals deposited: <b>{code.verifiedSlaves}/{code.slaves}</b></p>
+          <p><i className="info circle icon" />Current Rank: <b>{code.rank.current}</b></p>
 
-        <div className="affiliate-create">
-          <div className="ui action input">
-            <input ref="createCode" type="text" placeholder="Enter a code.." />
-            <button className="ui button" onClick={this.createCode}>Create Code</button>
-          </div>
-          <small className="warning">You may only create one code, you cannot change it after it is created.</small>
-        </div>
-        <div className="redeem-code module">
-          <i className="material-icons">card_giftcard</i>
-          <h2 className="ui center aligned header">Redeem a Code</h2>
-          <div className="ui action input">
-            <input ref="redeemCode" type="text" placeholder="Enter a code.." />
-            <button className="ui button" onClick={this.redeemCode}>Redeem Code</button>
-          </div>
-        </div>
+          <button className={classNames({'affiliate-button': true, 'ui': true, 'button': true, 'loading': this.props.affiliate.claiming})} onClick={this.claimBalance}>
+            <span>
+              Claim <span className="claimable">${code.balance}</span>
+            </span>
+          </button>
         </div>
       )
     }
-  } */
+    return null
+  }
+
+  renderLevelsTable() {
+    const { levelDetails } = this.props.affiliate
+    return Object.keys(levelDetails).map((key, index) => {
+      const level = levelDetails[key]
+      return (
+        <tr key={index}>
+          <td>{key}</td>
+          <td>{level.min} - {level.max}</td>
+          <td>{level.payout * 100}%</td>
+        </tr>
+      )
+    })
+  }
 
   render() {
     const { currentTab } = this.props
@@ -253,35 +211,19 @@ class AffiliatesSidebar extends Component {
           </div>
           <div className="one column row">
             <div className="column">
-              <div className="module module-affiliate affiliate-info-data">
-                <p><i className="add user icon" />You referred <b>{5}</b> users using code <b>{'test'}</b></p>
-                <p><i className="add to cart icon" />Number of referrals deposited: <b>{3}/{5}</b></p>
-                <p><i className="info circle icon" />Current Rank: <b>{'silver'}</b></p>
-
-                <button className="affiliate-button ui button">
-                  <span>
-                    Claim <span className="claimable">${0.23}</span>
-                  </span>
-                </button>
-              </div>
-              <div className="affiliate-info-table">
-                <table className="centered">
-                  <thead>
-                    <tr>
-                      <th>Level</th>
-                      <th>Unique Depositors</th>
-                      <th>Your Commision (Of User Rake)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{0}</td>
-                      <td>{5} - {5}</td>
-                      <td>{5 * 100}}%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              { this.renderCodeDetails() }
+              <table className="ui celled table affiliate-table">
+                <thead>
+                  <tr>
+                    <th>Level</th>
+                    <th>Unique Depositors</th>
+                    <th>Your Commision</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { this.renderLevelsTable() }
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

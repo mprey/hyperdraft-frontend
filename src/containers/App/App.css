@@ -1695,6 +1695,32 @@ body {
   color:#0087dc;
 }
 
+.affiliate-table {
+  background: #252424 !important;
+  margin: 1em !important;
+  width: calc(100% - 2em) !important;
+}
+
+.affiliate-table th {
+  background: #0a0e11 !important;
+  color: #0087dc !important;
+  border-left: 1px solid #252424 !important;
+}
+
+.affiliate-table th:first-child {
+  border-left: none !important;
+}
+
+.affiliate-table td {
+  background: #0c1114;
+  color: #eee;
+  border-left: 1px solid #252424 !important;
+}
+
+.affiliate-table td:first-child {
+  border-left: none !important;
+}
+
 .affiliate-info-data .affiliate-button {
   background: #054b78;
   -webkit-transition: background .3s ease;
@@ -1703,12 +1729,17 @@ body {
   color: #eee;
   font-size: 12px;
   font-family: "Montserrat", sans-serif;
-  position: absolute;
+  position: absolute !important;
   top: 50%; right: 15px;
   transform: translateY(-50%);
 }
 
-.affiliate-info-data .affiliate-button:hover, affiliate-info-data .affiliate-button:active, affiliate-info-data .affiliate-button:focus {
+.affiliate-info-data .affiliate-button:active, .affiliate-info-data .affiliate-button:focus {
+  background: #054b78;
+  color: #eee;
+}
+
+.affiliate-info-data .affiliate-button:hover {
   background: #0087dc;
   color: inherit;
 }

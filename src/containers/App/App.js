@@ -12,7 +12,8 @@ import {
   loadAuth,
   login,
   logout,
-  updateOnlineCount
+  updateOnlineCount,
+  updateClient
 } from '../../actions'
 
 import {
@@ -21,18 +22,14 @@ import {
 } from '../../components'
 
 import {
-  Sidebar
+  Sidebar,
+  Chat,
+  NavMenu
 } from '../'
 
 import loading from '../../static/img/loading.gif'
 import bigLogo from '../../static/img/logo.png'
 import smallLogo from '../../static/img/logo_small.png'
-import gamesImage from '../../static/img/menu/games.png'
-import accountImage from '../../static/img/menu/account.png'
-import fundsImage from '../../static/img/menu/funds.png'
-import statsImage from '../../static/img/menu/stats.png'
-import shopImage from '../../static/img/menu/shop.png'
-import supportImage from '../../static/img/menu/support.png'
 
 import './App.css'
 
@@ -56,6 +53,13 @@ class App extends Component {
     this.setCurrentTab = this.setCurrentTab.bind(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.auth.loading && this.props.auth.loading) {
+      /* Bug fix to reorganize the side menu when the loading gif disappears */
+      setTimeout(() => this.updateLayout(), 500)
+    }
+  }
+
   componentWillMount() {
     /* Listen to screen resize to adjust sidebar layout */
     window.addEventListener('resize', this.updateLayout)
@@ -67,6 +71,9 @@ class App extends Component {
 
     /* Dispatch the online count to Redux to manage */
     client.on('onlineUpdate', this.props.updateOnlineCount)
+
+    /* Received on a server-side update of the state */
+    client.on('diff', this.props.updateClient)
   }
 
   componentWillUnmount() {
@@ -163,10 +170,8 @@ class App extends Component {
         $('.sidebar-nav .login').slideUp()
         $('.sidebar-nav .menu-item.account').slideDown()
         $('.sidebar-nav .menu-item.funds').slideDown()
-        $('.sidebar-nav .profile-info').slideDown(() => {
-          this.updateLayout()
-        })
-      }, 1000)
+        $('.sidebar-nav .profile-info').slideDown()
+      }, 100)
       return (
         <div className="profile-info">
           <NavbarProfile user={user} logout={this.props.logout} />
@@ -228,72 +233,8 @@ class App extends Component {
                 <p>You are browsing HyperDraft on a mobile device. Some features have been restricted.</p>
               </div>
               { this.renderUserProfile() }
-              <div className="menu">
-                <div className="header">menu <i className="material-icons menu-toggle open" onClick={this.toggleSidebarNavMenu}>keyboard_arrow_down</i></div>
-                <div className="inner">
-                  <div className="menu-item games" /*onClick="route.change('games')"*/>
-                    <span>Games</span>
-                    <div className="icon">
-                      <img src={gamesImage} alt="games" />
-                    </div>
-                  </div>
-                  <div className="menu-item account" onClick={() => this.setCurrentTab('settings')} style={{display: 'none'}}>
-                    <span>Account</span>
-                    <div className="icon">
-                      <img src={accountImage} alt="account" />
-                    </div>
-                  </div>
-                  <div className="menu-item funds" onClick={() => this.setCurrentTab('deposit')} style={{display: 'none'}}>
-                    <span>Deposit</span>
-                    <div className="icon">
-                      <img src={fundsImage} alt="funds" />
-                    </div>
-                  </div>
-                  <div className="menu-item stats" /*onClick="route.change('stats')"*/>
-                    <span>Statistics</span>
-                    <div className="icon">
-                      <img src={statsImage} alt="stats" />
-                    </div>
-                  </div>
-                  <div className="menu-item shop" /*onClick="route.change('shop')"*/>
-                    <span>Shop</span>
-                    <div className="icon">
-                      <img src={shopImage} alt="shop" />
-                    </div>
-                  </div>
-                  <div className="menu-item support" /*onClick="modal.open('support')"*/>
-                    <span>Support</span>
-                    <div className="icon">
-                      <img src={supportImage} alt="support" />
-                    </div>
-                  </div>
-                </div>
-                <div className="header header-chat">
-                  <div className="online-users-div">
-                    <i className="circle icon"></i> <span>0</span>
-                  </div>
-                  Chat
-                  <i className="alarm outline icon chat-pm-toggle" title="PM & Mentions only"></i>
-                  <i className="material-icons chat-toggle open" onClick={this.toggleSidebarNavChat}>keyboard_arrow_down</i>
-                </div>
-              </div>
-              <div className="chat">
-                <div className="ui mobile-alert chat-mobile-alert" style={{display: 'none'}}>
-                  <p>{`Your browser's height is too small for chat.`}</p>
-                </div>
-                <div className="chat-messages">
-                  <div className="announcement-bar"></div>
-                  <div className="hover-bar">chat paused</div>
-                  <div className="faded-bar"></div>
-                  <div className="messages"></div>
-                </div>
-                <div className="chat-input">
-                  <div className="ui icon fluid input">
-                    <i className="question link icon"></i>
-                    <input type="text" maxLength="255" id="chatInput" placeholder="type your message here" />
-                  </div>
-                </div>
-              </div>
+              <NavMenu setCurrentTab={this.setCurrentTab} toggleSidebarNavMenu={this.toggleSidebarNavMenu} toggleSidebarNavChat={this.toggleSidebarNavChat} />
+              <Chat />
               <div className="footer">
                 <div className="data">
                   <div className="social">
@@ -321,13 +262,19 @@ class App extends Component {
                 <div className="branding" /*onClick="route.change('games')"*/>
                   <img src={bigLogo} className="logo" alt="logo" />
                 </div>
-                <div className="profile-info"></div>
+                {this.props.user &&
+                  <div className="profile-info">
+                    <NavbarProfileMobile user={this.props.user} logout={this.props.logout} />
+                  </div>
+                }
                 <div className="menu">
-                  <a onClick={this.props.login}>
-                    <div className="menu-item login">
-                      Login / Sign Up
-                    </div>
-                  </a>
+                  {!this.props.user &&
+                    <a onClick={this.props.login}>
+                      <div className="menu-item login">
+                        Login / Sign Up
+                      </div>
+                    </a>
+                  }
                   <div className="menu-item account" /*onClick="route.change('account')"*/ style={{display: 'none'}}>
                     My Account
                   </div>
@@ -344,7 +291,7 @@ class App extends Component {
                     Shop
                   </div>
 
-                  <div className="menu-item" onClick={window.showZE}>
+                  <div className="menu-item" onClick={() => window.zE.activate({ hideOnClose: true })}>
                     Support
                   </div>
                 </div>
@@ -376,7 +323,8 @@ const mapDispatchToProps = (dispatch) => {
     loadAuth,
     login,
     logout,
-    updateOnlineCount
+    updateOnlineCount,
+    updateClient
   }, dispatch)
 }
 

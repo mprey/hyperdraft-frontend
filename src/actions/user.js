@@ -10,10 +10,14 @@ import {
   USER_REDEEM_AFFILIATE_CODE_FAILURE,
   USER_LOAD_AFFILIATE_STATS,
   USER_LOAD_AFFILIATE_STATS_SUCCESS,
-  USER_LOAD_AFFILIATE_STATS_FAILURE
+  USER_LOAD_AFFILIATE_STATS_FAILURE,
+  USER_CLAIM_AFFILIATE_BALANCE,
+  USER_CLAIM_AFFILIATE_BALANCE_SUCCESS,
+  USER_CLAIM_AFFILIATE_BALANCE_FAILURE
 } from '../constants'
 
 import { alert } from './alert'
+import client from '../socket'
 
 export function loadInventory() {
   return {
@@ -31,14 +35,33 @@ export function loadInventory() {
 }
 
 export function loadAffiliateStats(user) {
+  return (dispatch) => {
+    dispatch(loadAffiliateStatsRequest())
+    client.emitAction('getPartnerDetails', { userid: user.id }).then(codeDetails => {
+      client.emitAction('getPartnerLevels').then(levelDetails => {
+        dispatch(loadAffiliateStatsSuccess(codeDetails, levelDetails))
+      }).catch(error => dispatch(loadAffiliateStatsFailure(error)))
+    }).catch(error => dispatch(loadAffiliateStatsFailure(error)))
+  }
+}
+
+function loadAffiliateStatsRequest() {
   return {
-    type: 'socket',
-    types: [USER_LOAD_AFFILIATE_STATS, USER_LOAD_AFFILIATE_STATS_SUCCESS, USER_LOAD_AFFILIATE_STATS_FAILURE],
-    promise: (socket) => socket.emitAction('getPartnerDetails', { userid: user.id }).then(data => {
-      console.log(data)
-    }).catch(error => {
-      console.log(error)
-    })
+    type: USER_LOAD_AFFILIATE_STATS
+  }
+}
+
+function loadAffiliateStatsSuccess(codeDetails, levelDetails) {
+  return {
+    type: USER_LOAD_AFFILIATE_STATS_SUCCESS,
+    payload: { codeDetails, levelDetails }
+  }
+}
+
+function loadAffiliateStatsFailure(error) {
+  return {
+    type: USER_LOAD_AFFILIATE_STATS_FAILURE,
+    payload: error
   }
 }
 
@@ -51,6 +74,20 @@ export function redeemAffiliateCode(code) {
     }).catch(error => {
       alert('error', error, 'Redeem Code')
       throw error
+    })
+  }
+}
+
+export function claimAffiliateBalance(user, code) {
+  return (dispatch) => {
+    dispatch({ type: USER_CLAIM_AFFILIATE_BALANCE })
+    client.emitAction('claimCodeBalance', { code }).then(data => {
+      alert('success', 'Successfully claimed affiliate wallet balance', 'Collect Earnings')
+      dispatch({ type: USER_CLAIM_AFFILIATE_BALANCE_SUCCESS })
+      dispatch(loadAffiliateStats(user))
+    }).catch(error => {
+      alert('error', error, 'Collect Earnings')
+      dispatch({ type: USER_CLAIM_AFFILIATE_BALANCE_FAILURE })
     })
   }
 }

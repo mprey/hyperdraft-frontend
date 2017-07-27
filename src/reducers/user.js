@@ -10,7 +10,10 @@ import {
   USER_REDEEM_AFFILIATE_CODE_FAILURE,
   USER_LOAD_AFFILIATE_STATS,
   USER_LOAD_AFFILIATE_STATS_SUCCESS,
-  USER_LOAD_AFFILIATE_STATS_FAILURE
+  USER_LOAD_AFFILIATE_STATS_FAILURE,
+  USER_CLAIM_AFFILIATE_BALANCE,
+  USER_CLAIM_AFFILIATE_BALANCE_SUCCESS,
+  USER_CLAIM_AFFILIATE_BALANCE_FAILURE
 } from '../constants'
 
 const initialState = {
@@ -22,15 +25,44 @@ const initialState = {
   affiliate: {
     creating: false,
     redeeming: false,
+    claiming: false,
     loaded: false,
     loading: false,
-    stats: {}
+    codeDetails: [],
+    levelDetails: {}
   }
 }
 
 export default function reducer(state = initialState, {type, payload}) {
   switch(type) {
 
+    /* Received when the user attempts to claim their balance */
+    case USER_CLAIM_AFFILIATE_BALANCE:
+      return {
+        ...state,
+        affiliate: {
+          ...state.affiliate,
+          claiming: true
+        }
+      }
+    case USER_CLAIM_AFFILIATE_BALANCE_SUCCESS:
+      return {
+        ...state,
+        affiliate: {
+          ...state.affiliate,
+          claiming: false
+        }
+      }
+    case USER_CLAIM_AFFILIATE_BALANCE_FAILURE:
+      return {
+        ...state,
+        affiliate: {
+          ...state.affiliate,
+          claiming: false
+        }
+      }
+
+    /* Received when the user is initially loading their affiliate stats from the back-end */
     case USER_LOAD_AFFILIATE_STATS:
       return {
         ...state,
@@ -40,14 +72,15 @@ export default function reducer(state = initialState, {type, payload}) {
         }
       }
     case USER_LOAD_AFFILIATE_STATS_SUCCESS:
-      console.log(payload)
+      const { codeDetails, levelDetails } = payload
       return {
         ...state,
         affiliate: {
           ...state.affiliate,
           loaded: true,
           loading: false,
-          stats: payload
+          codeDetails,
+          levelDetails
         }
       }
     case USER_LOAD_AFFILIATE_STATS_FAILURE:
