@@ -1,14 +1,12 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-
+import { Games } from './containers'
 
 const Routes = () => (
-  <main>
-    <Switch>
-      {/*<Route exact path="/" render={props => <Jackpot secureSocket={secureSocket} publicSocket={publicSocket} {...props} />} />*/}
-      {/*<Route path="/user/:id?" component={User} />*/}
-    </Switch>
-  </main>
+  <Switch>
+    <Route exact path="/" component={Games} />
+    <Route path="/games" component={Games} />
+  </Switch>
 )
 
 export default Routes

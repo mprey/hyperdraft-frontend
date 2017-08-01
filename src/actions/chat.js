@@ -7,7 +7,7 @@ import {
   CHAT_SEND_MESSAGE,
   CHAT_SEND_MESSAGE_SUCCESS,
   CHAT_SEND_MESSAGE_FAILURE,
-  CHAT_RECEIVE_MESSAGE,
+  CHAT_UPDATE_MESSAGES,
   CHAT_REMOVE_MESSAGE,
   CHAT_REMOVE_MESSAGE_SUCCESS,
   CHAT_REMOVE_MESSAGE_FAILURE
@@ -26,10 +26,10 @@ export function loadChat() {
   }
 }
 
-export function receiveChatMessage(message) {
+export function updateChatMessages(messages) {
   return {
-    type: CHAT_RECEIVE_MESSAGE,
-    payload: message
+    type: CHAT_UPDATE_MESSAGES,
+    payload: messages
   }
 }
 

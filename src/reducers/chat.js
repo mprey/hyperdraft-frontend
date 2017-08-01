@@ -5,14 +5,14 @@ import {
   CHAT_SEND_MESSAGE,
   CHAT_SEND_MESSAGE_SUCCESS,
   CHAT_SEND_MESSAGE_FAILURE,
-  CHAT_RECEIVE_MESSAGE
+  CHAT_UPDATE_MESSAGES
 } from '../constants'
 
 const initialState = {
   loaded: false,
   loading: false,
   sending: false,
-  chatData: {}
+  messages: []
 }
 
 export default function reducer(state = initialState, {type, payload}) {
@@ -34,8 +34,11 @@ export default function reducer(state = initialState, {type, payload}) {
         sending: false
       }
 
-    case CHAT_RECEIVE_MESSAGE:
-      //TODO
+    case CHAT_UPDATE_MESSAGES:
+      return {
+        ...state,
+        messages: payload
+      }
 
     case CHAT_LOAD:
       return {
@@ -48,7 +51,7 @@ export default function reducer(state = initialState, {type, payload}) {
         ...state,
         loaded: true,
         loading: false,
-        chatData: payload
+        messages: payload.chat
       }
     case CHAT_LOAD_FAILURE:
       return {

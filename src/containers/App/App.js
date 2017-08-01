@@ -1,24 +1,27 @@
 import React, { Component } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import classNames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import AnimateHeight from 'react-animate-height'
 import client from '../../socket'
 import Routes from '../../routes'
-import $ from 'jquery'
+import ReactDOM from 'react-dom'
+import { state } from '../../state'
 
 import {
   loadAuth,
   login,
   logout,
-  updateOnlineCount,
   updateClient
 } from '../../actions'
 
 import {
   NavbarProfile,
-  NavbarProfileMobile
+  NavbarProfileMobile,
+  BannedModal,
+  Footer,
+  LoadingGif
 } from '../../components'
 
 import {
@@ -27,7 +30,6 @@ import {
   NavMenu
 } from '../'
 
-import loading from '../../static/img/loading.gif'
 import bigLogo from '../../static/img/logo.png'
 import smallLogo from '../../static/img/logo_small.png'
 
@@ -41,16 +43,38 @@ class App extends Component {
     this.sidebarNavLock = false
 
     this.state = {
+      /* view controllers */
       sidebarNavOpen: false,
       sidebarNavMenuOpen: true,
+      sidebarChatOpen: true,
       sidebarOpen: false,
-      currentTab: null
+
+      /* tab for the sidebar */
+      currentTab: null,
+
+      /* for sliding up/down */
+      sidebarChatHeight: 'auto',
+      sidebarNavMenuHeight: 'auto',
+
+      /* Disabled if the screen height is too small */
+      sidebarChatDisabled: false,
+
+      /* width and height to update layout */
+      width: 0,
+      height: 0
     }
 
     this.toggleSidebarNav = this.toggleSidebarNav.bind(this)
     this.updateLayout = this.updateLayout.bind(this)
     this.toggleSidebarNavMenu = this.toggleSidebarNavMenu.bind(this)
+    this.toggleSidebarNavChat = this.toggleSidebarNavChat.bind(this)
     this.setCurrentTab = this.setCurrentTab.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight })
+    this.updateLayout()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,116 +86,36 @@ class App extends Component {
 
   componentWillMount() {
     /* Listen to screen resize to adjust sidebar layout */
-    window.addEventListener('resize', this.updateLayout)
+    window.addEventListener('resize', this.updateWindowDimensions)
 
     /* Load auth data from back-end on initial load */
     if (!this.props.auth.loaded) {
       this.props.loadAuth()
     }
 
-    /* Dispatch the online count to Redux to manage */
-    client.on('onlineUpdate', this.props.updateOnlineCount)
-
     /* Received on a server-side update of the state */
-    client.on('diff', this.props.updateClient)
+    client.on('diff', state.patch)
   }
 
   componentWillUnmount() {
     /* Unregister event listeners on unmount */
-    window.removeEventListener('resize', this.updateLayout)
+    window.removeEventListener('resize', this.updateWindowDimensions)
 
     /* Unregister socket listeners on unmount */
-    client.off('onlineUpdate')
+    client.off('diff')
   }
 
   componentDidMount() {
+    /* Update the window dimensions when the component is mounted */
+    this.updateWindowDimensions()
+
     /* Update the main layout when the component is mounted */
-    this.updateLayout()
-  }
-
-  /* Display the full sidebar or the minified version */
-  toggleSidebarNav(ignoreLock) {
-    this.sidebarNavLock = ignoreLock === false ? false : true
-    this.setState({ sidebarNavOpen: !this.state.sidebarNavOpen })
-    this.updateLayout()
-  }
-
-  /* Pre-existing code */
-  toggleSidebarNavChat() {
-    if ($('.sidebar-nav .chat-toggle').hasClass('open')) {
-      $('.sidebar-nav .chat-toggle').removeClass('open')
-      $('.sidebar-nav .chat').finish().slideUp()
-    } else {
-      $('.sidebar-nav .chat-toggle').addClass('open')
-      $('.sidebar-nav .chat').finish().slideDown()
-    }
-  }
-
-  /* Pre-existing code */
-  toggleSidebarNavMenu() {
-    if ($('.sidebar-nav .menu .menu-toggle').hasClass('open')) {
-  		$('.sidebar-nav .menu .menu-toggle').removeClass('open')
-  		$('.sidebar-nav .menu .inner').finish().slideUp(() => {
-  			this.updateLayout()
-  		})
-  	} else {
-  		$('.sidebar-nav .menu .menu-toggle').addClass('open')
-  		$('.sidebar-nav .menu .inner').finish().slideDown(() => {
-  			this.updateLayout()
-  		})
-  	}
-  }
-
-  /* Pre-existing code */
-  updateLayout() {
-    const winHeight = $(window).height()
-  	const winWidth = $(window).width()
-    const { sidebarNavOpen } = this.state
-
-  	if (!this.sidebarNavLock) {
-  		if (winWidth < 600 && sidebarNavOpen) {
-  			this.toggleSidebarNav(true)
-  		} else if (winWidth > 600 && !sidebarNavOpen) {
-  			this.toggleSidebarNav(true)
-  		}
-  	}
-
-  	// Sidebar
-  	var sidebarHeightInner = 0
-  	$('.sidebar-nav').children().not('.chat').each(function() {
-  		sidebarHeightInner += $(this).height()
-  	})
-
-  	// improve
-  	if ($('.sidebar-nav').height() < 580 && $('.sidebar-nav .menu-toggle').hasClass('open')) {
-  		$('.sidebar-nav').css('overflow-y', 'scroll').perfectScrollbar()
-  		$('.sidebar-nav .chat-messages, .sidebar-nav .chat-input').slideUp()
-  		$('.sidebar-nav .chat-mobile-alert').slideDown()
-  	} else if ($('.sidebar-nav').height() > 580) {
-  		$('.sidebar-nav').css('overflow-y', 'hidden').perfectScrollbar('destroy')
-  		$('.sidebar-nav .chat-messages, .sidebar-nav .chat-input').slideDown()
-  		$('.sidebar-nav .chat-mobile-alert').slideUp()
-  		$('.sidebar-nav .chat-messages .messages').css('height', ($('.sidebar-nav').height() - sidebarHeightInner) - 62)
-  	}
-
-  	if ($('body').children('.action-modal').length > 0) {
-  		if (winHeight < $('.action-modal .modal').height()) {
-  			$('.action-modal').css('display', 'block')
-  		} else {
-  			$('.action-modal').css('display', 'flex')
-  		}
-  	}
+    setTimeout(this.updateLayout, 300)
   }
 
   renderUserProfile() {
     const { user } = this.props.auth
     if (user) {
-      setTimeout(() => {
-        $('.sidebar-nav .login').slideUp()
-        $('.sidebar-nav .menu-item.account').slideDown()
-        $('.sidebar-nav .menu-item.funds').slideDown()
-        $('.sidebar-nav .profile-info').slideDown()
-      }, 100)
       return (
         <div className="profile-info">
           <NavbarProfile user={user} logout={this.props.logout} />
@@ -201,19 +145,11 @@ class App extends Component {
     const { sidebarNavOpen, currentTab, sidebarOpen } = this.state
     return (
       <div className="App">
-        <ReactCSSTransitionGroup
-          transitionName="fade-gif"
-          transitionEnterTimeout={0}
-          transitionLeaveTimeout={1000}>
-            {this.props.auth.loading &&
-              <div className="preloader">
-                <img src={loading} alt="loading" />
-              </div>
-            }
-        </ReactCSSTransitionGroup>
+        <LoadingGif isLoading={this.props.auth.loading} />
         {!this.props.auth.loading &&
           <div>
-            <Routes />
+            <BannedModal user={this.props.auth.user} logout={this.props.logout} />
+
             <div className="user-profile-modal" id="userProfileModal"></div>
             <ul className="chat-contextmenu" id="chatContextMenu">
               <li className="info"><img src="" alt="empty" /></li>
@@ -221,6 +157,7 @@ class App extends Component {
               <li data-action="transfer"><i className="gift icon"></i> Gift HyperCredits</li>
               <li data-action="mention"><i className="at icon"></i> Mention</li>
             </ul>
+
             <div className={classNames({ 'sidebar-nav': true, 'collapsed': !sidebarNavOpen })}>
               <div className={classNames({ 'toggle': true, 'toggled': !sidebarNavOpen })} onClick={this.toggleSidebarNav}>
                 <i className="material-icons">chevron_left</i>
@@ -232,28 +169,20 @@ class App extends Component {
               <div className="ui mobile only mobile-alert">
                 <p>You are browsing HyperDraft on a mobile device. Some features have been restricted.</p>
               </div>
+
               { this.renderUserProfile() }
-              <NavMenu setCurrentTab={this.setCurrentTab} toggleSidebarNavMenu={this.toggleSidebarNavMenu} toggleSidebarNavChat={this.toggleSidebarNavChat} />
-              <Chat />
-              <div className="footer">
-                <div className="data">
-                  <div className="social">
-                    <a href="https://twitter.com/HyperDraft" target="_blank" rel="noopener noreferrer"><i className="twitter icon"></i></a>
-                    <a href="https://facebook.com/HyperDraft" target="_blank" rel="noopener noreferrer"><i className="facebook icon"></i></a>
-                    <a href="https://www.reddit.com/r/hyperdraft" target="_blank" rel="noopener noreferrer"><i className="reddit alien icon"></i></a>
-                    <a href="http://steamcommunity.com/groups/hyperdraft" target="_blank" rel="noopener noreferrer"><i className="steam icon"></i></a>
-                    <a href="https://vk.com/hyperdraft" target="_blank" rel="noopener noreferrer"><i className="vk icon"></i></a>
-                  </div>
-                  <div className="copyright">&copy; HyperDraft 2016</div>
-                  <div className="legal">
-                    <a href="pages/terms.html" target="_blank" rel="noopener noreferrer">Terms</a>
-                    <a href="pages/privacy.html" target="_blank" rel="noopener noreferrer">Privacy</a>
-                    <a href="http://www.responsiblegambling.org/" target="_blank" rel="noopener noreferrer">Responsible Gaming</a>
-                  </div>
-                </div>
-              </div>
+
+              <NavMenu height={this.state.sidebarNavMenuHeight} open={this.state.sidebarNavMenuOpen} chatOpen={this.state.sidebarChatOpen} user={this.props.auth.user} setCurrentTab={this.setCurrentTab} toggleSidebarNavMenu={this.toggleSidebarNavMenu} toggleSidebarNavChat={this.toggleSidebarNavChat} />
+
+              <AnimateHeight height={this.state.sidebarChatHeight} duration={500} contentClassName="force">
+                <Chat ref="chat" isDisabled={this.state.sidebarChatDisabled} open={this.state.sidebarChatOpen} height={this.state.sidebarChatHeight} openHelpModal={() => this.setState({ chatHelpModal: true })} user={this.props.auth.user} />
+              </AnimateHeight>
+
+              <Footer />
             </div>
+
             <Sidebar isOpen={sidebarOpen} currentTab={currentTab} setCurrentTab={this.setCurrentTab} />
+
             <div className="mobile-menu">
               <div className="close-btn">
                 <i className="remove icon"></i>
@@ -275,12 +204,16 @@ class App extends Component {
                       </div>
                     </a>
                   }
-                  <div className="menu-item account" /*onClick="route.change('account')"*/ style={{display: 'none'}}>
-                    My Account
-                  </div>
-                  <div className="menu-item funds" /*onClick="sidebar.toggle()"*/ style={{display: 'none'}}>
-                    Wallet
-                  </div>
+                  {this.props.user &&
+                    <div className="menu-item account" /*onClick="route.change('account')"*/>
+                      My Account
+                    </div>
+                  }
+                  {this.props.user &&
+                    <div className="menu-item funds" /*onClick="sidebar.toggle()"*/>
+                      Wallet
+                    </div>
+                  }
                   <div className="menu-item" /*onClick="route.change('games')"*/>
                     Games
                   </div>
@@ -300,17 +233,69 @@ class App extends Component {
             <div className="mobile-menu-btn">
               <i className="bars icon"></i>
             </div>
+
             <div className={classNames({ 'page-content': true, 'nav-collapsed': !sidebarNavOpen })}>
               <Routes />
             </div>
+
           </div>
         }
       </div>
     )
   }
-}
 
-require('perfect-scrollbar/jquery')($)
+  /* Display the full sidebar or the minified version */
+  toggleSidebarNav(ignoreLock) {
+    this.sidebarNavLock = ignoreLock === false ? false : true
+    this.setState({ sidebarNavOpen: !this.state.sidebarNavOpen })
+    setTimeout(this.updateLayout, 300)
+  }
+
+  /* Toggle the sidebar chat menu */
+  toggleSidebarNavChat() {
+    if (this.state.sidebarChatOpen) {
+      return this.setState({ sidebarChatOpen: false, sidebarChatHeight: 0 })
+    }
+    this.setState({ sidebarChatOpen: true })
+    setTimeout(this.updateLayout, 100)
+  }
+
+  /* Toggle the sidebar nav menu */
+  toggleSidebarNavMenu() {
+    this.setState({ sidebarNavMenuOpen: !this.state.sidebarNavMenuOpen, sidebarNavMenuHeight: (this.state.sidebarNavMenuOpen ? 0 : 'auto') })
+    setTimeout(this.updateLayout, 500)
+  }
+
+  /* Automatically update the window to format the viewport */
+  updateLayout() {
+    const { width, height, sidebarNavOpen } = this.state
+
+    const chat = ReactDOM.findDOMNode(this.refs.chat)
+
+    const WIDTH_MIN = 600
+    const HEIGHT_MIN_FOR_CHAT = 100
+    const FOOTER_LENGTH = 65
+
+    /* Toggle the sidebar navigation if the window width is smaller than 600 pixels */
+  	if (!this.sidebarNavLock) {
+  		if (width < WIDTH_MIN && sidebarNavOpen) {
+  			this.toggleSidebarNav(true)
+  		} else if (width > WIDTH_MIN && !sidebarNavOpen) {
+  			this.toggleSidebarNav(true)
+  		}
+  	}
+
+    /* Disable the chat if the window height is smaller than HEIGHT_MIN_FOR_CHAT */
+    if (chat && this.state.sidebarChatOpen) {
+      const chatHeight = height - FOOTER_LENGTH - chat.offsetTop
+      if (chatHeight < HEIGHT_MIN_FOR_CHAT) {
+        return this.setState({ sidebarChatHeight: 50, sidebarChatDisabled: true })
+      }
+      this.setState({ sidebarChatHeight: chatHeight, sidebarChatDisabled: false})
+    }
+  }
+
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -323,7 +308,6 @@ const mapDispatchToProps = (dispatch) => {
     loadAuth,
     login,
     logout,
-    updateOnlineCount,
     updateClient
   }, dispatch)
 }

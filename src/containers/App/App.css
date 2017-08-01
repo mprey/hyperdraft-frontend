@@ -5,6 +5,14 @@ body {
   background-color: #0a0e11
 }
 
+html, body {
+  height: 100%;
+}
+
+.force {
+  height: 100%;
+}
+
 .action-modal {
   display: -webkit-box;
   display: -webkit-flex;
@@ -402,19 +410,13 @@ body {
   top: 0;
   left: 0;
   background: #0e1319;
-  overflow-x: hidden;
+  overflow: hidden;
   box-shadow: 0 0 16px black
 }
 
 @media screen and (max-width:420px) {
   .sidebar-nav {
     display: none
-  }
-}
-
-@media screen and (min-height:550px) {
-  .sidebar-nav {
-    overflow-y: scroll
   }
 }
 
@@ -700,7 +702,8 @@ body {
 }
 
 .sidebar-nav .chat {
-  position: relative
+  position: relative;
+  height: 100%;
 }
 
 .sidebar-nav .chat .chat-messages:hover .hover-bar {
@@ -725,6 +728,10 @@ body {
   transition: opacity .2s ease
 }
 
+.sidebar-nav .chat .chat-messages {
+  height: 100%;
+}
+
 .sidebar-nav .chat .chat-messages .faded-bar {
   background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.7));
   position: absolute;
@@ -737,9 +744,9 @@ body {
 
 .sidebar-nav .chat .chat-messages .messages {
   position: relative;
-  height: 400px;
-  transition: height .5s ease;
-  overflow-x: hidden
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: calc(100% - 32px);
 }
 
 .sidebar-nav .chat .chat-messages .messages .chat-message {
@@ -804,11 +811,11 @@ body {
   color: #054b78
 }
 
-.sidebar-nav .chat .chat-messages .messages .chat-message.odd {
+.sidebar-nav .chat .chat-messages .messages .chat-message:nth-child(odd) {
   background: #0d1116
 }
 
-.sidebar-nav .chat .chat-messages .messages .chat-message.even {
+.sidebar-nav .chat .chat-messages .messages .chat-message:nth-child(even) {
   background: #13181e
 }
 
@@ -845,7 +852,10 @@ body {
 .sidebar-nav .chat .chat-input {
   background: #0a0e11;
   height: 32px;
-  border-bottom: 1px solid #0087dc
+  border-bottom: 1px solid #0087dc;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .sidebar-nav .chat .chat-input i.question {
