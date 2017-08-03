@@ -27,7 +27,7 @@ class Modal extends Component {
       >
         {this.props.isOpen &&
           <div className="action-modal open">
-            <div className="backdrop" onClick={this.props.onClose} />
+            <div className="backdrop" />
             <div className="modal">
               <div className="inner">
                 {!this.props.loading && this.props.children}

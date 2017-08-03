@@ -2,11 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
+import _ from 'lodash'
 import { state } from '../../state'
 
 import {
   loadCoinflipHistory
 } from '../../actions'
+
+import {
+  CoinflipListing,
+  CoinflipHistoryListing,
+  CoinflipCreateModal,
+  CoinflipWatchModal,
+  CoinflipJoinModal,
+  CoinflipHelpModal
+} from '../../components'
 
 import coinflipLogo from '../../static/img/games/coinflip/logo.png'
 
@@ -14,6 +24,15 @@ const CONFIG = 'coinflip'
 const HISTORY_LIMIT = 8
 
 class Coinflip extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      createModal: false,
+      helpModal: false
+    }
+  }
 
   componentDidMount() {
     if (!this.props.coinflip.loaded) {
@@ -36,31 +55,54 @@ class Coinflip extends Component {
     if (this.gameState) {
       var value = 0.00
       for (const key in this.gameState) {
-        value += parseFloat(this.gameState[key].value)
+        value += parseFloat(this.gameState[key].value) * 100
       }
-      return Number(value * 100).toFixed(2)
+      return Number(value).toFixed(0)
     }
     return 0.00
   }
 
-  createCoinflip() {
+  createCoinflip(side, amount) {
     console.log('creating')
   }
 
-  renderCoinflipHistory() {
-    console.log(this.props.coinflip)
+  updateStatus() {
+    if (this.props.status) {
+      this.props.status.innerHTML = this.totalValue
+    }
+  }
+
+  renderHistoryGames() {
+    return this.props.coinflip.history.map((game, index) => (
+      <CoinflipHistoryListing game={game} key={index} />
+    ))
   }
 
   renderLiveGames() {
-
+    const games = _.sortBy(this.gameState, 'value').reverse()
+    return games.map((game, index) => (
+      <CoinflipListing game={game} key={index} />
+    ))
   }
 
   render() {
     const { currentTab } = this.props
     return (
       <div className={classNames({ 'ui': true, 'tab': true, 'inner': true, 'coinflip': true, 'active':  currentTab === 'coinflip' })}>
+
+        {/* Modals */}
+        <CoinflipCreateModal
+          isOpen={this.state.createModal}
+          createCoinflip={this.createCoinflip}
+          onClose={() => this.setState({ createModal: false })}
+        />
+        <CoinflipHelpModal
+          isOpen={this.state.helpModal}
+          onClose={() => this.setState({ helpModal: false })}
+        />
+
         <div className="info-meta">
-          <span className="howto"><i className="question circle icon"></i> How to Play</span>
+          <span className="howto" onClick={() => this.setState({ helpModal: true })}><i className="question circle icon"></i> How to Play</span>
           <span className="provably-fair"><i className="lock icon"></i> Provably Fair</span>
         </div>
         <div className="ui container">
@@ -72,9 +114,13 @@ class Coinflip extends Component {
               <div className="ui segment">
                 <div className="header">
                   <span className="title">Current Coinflips</span>
-                  <span className="create" onClick={this.createCoinflip}><i className="pencil icon"></i> Create</span>
+                  <span className="create" onClick={() => this.setState({ createModal: true })}><i className="pencil icon"></i> Create</span>
                 </div>
-                <table></table>
+                <table>
+                  <tbody>
+                    { this.renderLiveGames() }
+                  </tbody>
+                </table>
               </div>
 
             </div>
@@ -92,6 +138,7 @@ class Coinflip extends Component {
                 <div className="ui statistic">
                   <div className="value total-value">
                     { this.totalValue }
+                    { this.updateStatus() }
                   </div>
                   <div className="label">
                     Total Value
@@ -101,7 +148,9 @@ class Coinflip extends Component {
               <div className="ui segment history">
                 <h1 className="ui center aligned header">History</h1>
                 <table>
-                  { this.renderCoinflipHistory() }
+                  <tbody>
+                    { this.renderHistoryGames() }
+                  </tbody>
                 </table>
               </div>
             </div>

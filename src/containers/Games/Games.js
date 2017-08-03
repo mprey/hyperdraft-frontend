@@ -8,7 +8,6 @@ import Jackpot from './Jackpot'
 import Roulette from './Roulette'
 
 import rouletteMenu from '../../static/img/games/roulette/menu.png'
-import rouletteLogo from '../../static/img/games/roulette/logo.png'
 import jackpotMenu from '../../static/img/games/jackpot/menu.png'
 import jackpotLogo from '../../static/img/games/jackpot/logo.png'
 import coinflipMenu from '../../static/img/games/coinflip/menu.png'
@@ -31,84 +30,21 @@ class Games extends Component {
           <div className="ui secondary stackable pointing menu games-menu">
             <a className={classNames({ 'item': true, 'active':  currentTab === 'roulette' })} onClick={() => this.setState({ currentTab: 'roulette' })}>
               <img src={rouletteMenu} alt="roulette" /> Roulette
-              <span className="status"><i className="hc"></i> 0</span>
+              <span className="status"><i className="hc"></i> <span ref="rouletteStatus">0</span></span>
             </a>
             <a className={classNames({ 'item': true, 'active':  currentTab === 'jackpot' })} onClick={() => this.setState({ currentTab: 'jackpot' })}>
               <img src={jackpotMenu} alt="jackpot" /> Jackpot
+              <span className="status"><i className="hc"></i> <span ref="jackpotStatus">0</span></span>
             </a>
             <a className={classNames({ 'item': true, 'active':  currentTab === 'coinflip' })} onClick={() => this.setState({ currentTab: 'coinflip' })}>
               <img src={coinflipMenu} alt="coinflip" /> Coinflip
-              <span className="status"><i className="hc"></i> 0</span>
+              <span className="status"><i className="hc"></i> <span ref="coinflipStatus">0</span></span>
             </a>
           </div>
         </div>
         <div className="section section-content">
-          <Coinflip currentTab={currentTab} />
-          <div className={classNames({ 'ui': true, 'tab': true, 'inner': true, 'roulette': true, 'active':  currentTab === 'roulette' })}>
-            <div className="info-meta">
-              <span className="howto"><i className="question circle icon"></i> How to Play</span>
-              <span className="provably-fair"><i className="lock icon"></i> Provably Fair</span>
-            </div>
-            <div className="ui container">
-              <img src={rouletteLogo} alt="roulette" className="logo" />
-
-              <div className="history">
-                Previous Rolls
-                <div className="list"></div>
-              </div>
-
-              <div className="segment roll">
-                <div className="overlay on">
-                  <div className="content"></div>
-                </div>
-                <div className="list"></div>
-                <div className="bar"></div>
-              </div>
-
-              <div className="segment wager">
-                <div className="ui action input">
-                  <input type="text" placeholder="Enter an amount.." />
-                  <button className="ui button" data-value="clear">Clear</button>
-                  <button className="ui button" data-value="+ 10">+10</button>
-                  <button className="ui button" data-value="+ 50">+50</button>
-                  <button className="ui button" data-value="+ 100">+100</button>
-                  <button className="ui button mobile" data-value="half">1/2</button>
-                  <button className="ui button mobile" data-value="* 2">x2</button>
-                  <button className="ui button" data-value="max">Max</button>
-                </div>
-              </div>
-
-              <div className="ui stackable three column grid bet-panels">
-                <div className="column panel">
-                  <div className="ui segment red" data-selection="0">
-                    <div className="header">
-                      Red (even)
-                      <div className="total"></div>
-                    </div>
-                    <table className="entries"></table>
-                  </div>
-                </div>
-                <div className="column panel">
-                  <div className="ui segment blue" data-selection="2">
-                    <div className="header">
-                      Blue (0)
-                      <div className="total"></div>
-                    </div>
-                    <table className="entries"></table>
-                  </div>
-                </div>
-                <div className="column panel">
-                  <div className="ui segment black" data-selection="1">
-                    <div className="header">
-                      Black (odd)
-                      <div className="total"></div>
-                    </div>
-                    <table className="entries"></table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Coinflip currentTab={currentTab} status={this.refs.coinflipStatus} />
+          <Roulette currentTab={currentTab} status={this.refs.rouletteStatus} />
           <div className={classNames({ 'ui': true, 'tab': true, 'inner': true, 'coinflip': true, 'active':  currentTab === 'jackpot' })}>
             <div className="info-meta">
               <span className="howto"><i className="question circle icon"></i> How to Play</span>

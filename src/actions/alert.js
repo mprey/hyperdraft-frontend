@@ -1,7 +1,6 @@
 import toastr from 'toastr'
-import $ from 'jquery'
+import { playSound } from './sound'
 import settings from '../settings'
-import 'jquery-ui/ui/widgets/slider'
 
 import notificationImage from '../static/img/notification.png'
 import errorSound from '../static/sounds/error.mp3'
@@ -14,7 +13,7 @@ export function alert(type, text, title, noSound) {
 			toastr.error(text, title)
       if (noSound) return
 			if (!settings.disabledSounds) {
-				$.playSound(errorSound)
+				playSound(errorSound)
 			}
 			break
 
@@ -22,7 +21,7 @@ export function alert(type, text, title, noSound) {
 			toastr.success(text, title)
 			if (noSound) return
 			if (!settings.disabledSounds) {
-				$.playSound(successSound)
+				playSound(successSound)
 			}
 			break
 
@@ -30,7 +29,7 @@ export function alert(type, text, title, noSound) {
 			toastr.info(text, title)
 			if (noSound) return
 			if (!settings.disabledSounds) {
-				$.playSound(infoSound)
+				playSound(infoSound)
 			}
 			break
 

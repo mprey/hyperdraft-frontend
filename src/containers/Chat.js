@@ -36,11 +36,13 @@ class Chat extends Component {
       this.props.loadChat()
     }
 
-    client.emitAction('getChatCommands').then(console.log)
-
     state.on('chats', (state, value, key) => {
       this.props.updateChatMessages(state.en.chat)
     })
+  }
+
+  componentWillUnmount() {
+    state.removeAllListeners('chats')
   }
 
   scrollToBottom() {

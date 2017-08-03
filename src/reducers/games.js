@@ -1,11 +1,19 @@
 import {
   COINFLIP_LOAD_HISTORY,
   COINFLIP_LOAD_HISTORY_SUCCESS,
-  COINFLIP_LOAD_HISTORY_FAILURE
+  COINFLIP_LOAD_HISTORY_FAILURE,
+  ROULETTE_LOAD_HISTORY,
+  ROULETTE_LOAD_HISTORY_SUCCESS,
+  ROULETTE_LOAD_HISTORY_FAILURE
 } from '../constants'
 
 const initialState = {
   coinflip: {
+    history: [],
+    loaded: false,
+    loading: false
+  },
+  roulette: {
     history: [],
     loaded: false,
     loading: false
@@ -14,6 +22,34 @@ const initialState = {
 
 export default function reducer(state = initialState, {type, payload}) {
   switch(type) {
+
+    case ROULETTE_LOAD_HISTORY:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          loading: true
+        }
+      }
+    case ROULETTE_LOAD_HISTORY_SUCCESS:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          history: payload,
+          loaded: true,
+          loading: false
+        }
+      }
+    case ROULETTE_LOAD_HISTORY_FAILURE:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          loaded: false,
+          loading: false
+        }
+      }
 
     case COINFLIP_LOAD_HISTORY:
       return {
@@ -27,6 +63,7 @@ export default function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         coinflip: {
+          ...state.coinflip,
           history: payload,
           loaded: true,
           loading: false
