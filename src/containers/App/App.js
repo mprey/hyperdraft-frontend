@@ -13,7 +13,8 @@ import {
   loadAuth,
   login,
   logout,
-  updateClient
+  updateClient,
+  loadUserWallets
 } from '../../actions'
 
 import {
@@ -81,6 +82,9 @@ class App extends Component {
     if (!nextProps.auth.loading && this.props.auth.loading) {
       /* Bug fix to reorganize the side menu when the loading gif disappears */
       setTimeout(() => this.updateLayout(), 500)
+
+      /* Load the users wallets after auth has finished */
+      this.props.loadUserWallets()
     }
   }
 
@@ -118,7 +122,7 @@ class App extends Component {
     if (user) {
       return (
         <div className="profile-info">
-          <NavbarProfile user={user} logout={this.props.logout} />
+          <NavbarProfile user={user} userWallet={this.props.userWallet} logout={this.props.logout} />
         </div>
       )
     } else {
@@ -299,7 +303,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    userWallet: state.user.wallet
   }
 }
 
@@ -308,7 +313,8 @@ const mapDispatchToProps = (dispatch) => {
     loadAuth,
     login,
     logout,
-    updateClient
+    updateClient,
+    loadUserWallets
   }, dispatch)
 }
 

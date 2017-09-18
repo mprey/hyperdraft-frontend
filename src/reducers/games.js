@@ -4,7 +4,11 @@ import {
   COINFLIP_LOAD_HISTORY_FAILURE,
   ROULETTE_LOAD_HISTORY,
   ROULETTE_LOAD_HISTORY_SUCCESS,
-  ROULETTE_LOAD_HISTORY_FAILURE
+  ROULETTE_LOAD_HISTORY_FAILURE,
+  ROULETTE_ADD_HISTORY_GAME,
+  ROULETTE_JOIN_GAME,
+  ROULETTE_JOIN_GAME_SUCCESS,
+  ROULETTE_JOIN_GAME_FAILURE
 } from '../constants'
 
 const initialState = {
@@ -16,12 +20,47 @@ const initialState = {
   roulette: {
     history: [],
     loaded: false,
-    loading: false
+    loading: false,
+    joining: false
   }
 }
 
 export default function reducer(state = initialState, {type, payload}) {
   switch(type) {
+
+    case ROULETTE_JOIN_GAME:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          joining: true
+        }
+      }
+    case ROULETTE_JOIN_GAME_SUCCESS:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          joining: false
+        }
+      }
+    case ROULETTE_JOIN_GAME_FAILURE:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          joining: false
+        }
+      }
+
+    case ROULETTE_ADD_HISTORY_GAME:
+      return {
+        ...state,
+        roulette: {
+          ...state.roulette,
+          history: [payload, ...state.roulette.history.slice(0, 9)]
+        }
+      }
 
     case ROULETTE_LOAD_HISTORY:
       return {

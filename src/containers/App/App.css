@@ -13,6 +13,13 @@ html, body {
   height: 100%;
 }
 
+.slide-enter {
+  opacity: 0.1;
+}
+.slide-enter.slide-enter-active {
+  opacity: 1;
+}
+
 .action-modal {
   display: -webkit-box;
   display: -webkit-flex;

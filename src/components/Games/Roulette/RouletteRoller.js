@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { TimelineMax, Power4 } from 'gsap'
+import { playSound } from '../../../actions'
+import settings from '../../../settings'
+
+import rouletteRoll from '../../../static/sounds/roulette-roll.mp3'
 
 const NUMBERS = [0, 11, 6, 3, 10, 1, 12, 5, 14, 7, 4, 13, 2, 9, 8]
-const MAX_TILES = 75
-const MIN_THRESHOLD = 45
+const MAX_TILES = 100
+const MIN_THRESHOLD = 60
 const ROLL_TIME = 8
 
 class RouletteRoller extends Component {
@@ -23,7 +27,11 @@ class RouletteRoller extends Component {
 
     const winnerX = this.findWinnerX()
 
-    tl.to(this.refs.roller, 8, { x: -winnerX, ease: Power4.easeOut })
+    tl.to(this.refs.roller, ROLL_TIME, { x: -winnerX, ease: Power4.easeOut })
+
+    if (!settings.disabledSounds) {
+      playSound(rouletteRoll)
+    }
   }
 
   findWinnerX() {

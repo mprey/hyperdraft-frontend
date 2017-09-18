@@ -99,7 +99,7 @@ class NavMenu extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    onlineCount: state.app.onlineCount
+    onlineCount: state.app.onlineCount,
   }
 }
 

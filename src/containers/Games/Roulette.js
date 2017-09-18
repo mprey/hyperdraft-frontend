@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import { state } from '../../state'
-import client from '../../socket'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import _ from 'lodash'
+import CountUp from 'react-countup'
 
 import {
   RouletteHelpModal,
@@ -11,13 +13,22 @@ import {
 } from '../../components'
 
 import {
-  loadRouletteHistory
+  loadRouletteHistory,
+  addRouletteHistoryGame,
+  alert,
+  joinRoulette
 } from '../../actions'
 
 import rouletteLogo from '../../static/img/games/roulette/logo.png'
 
 const ROULETTE_CONFIG = 'roulette_main'
 const HISTORY_MAX = 10
+
+const selections = {
+  '0': 'red',
+  '1': 'black',
+  '2': 'green'
+}
 
 class Roulette extends Component {
 
@@ -30,6 +41,12 @@ class Roulette extends Component {
       countdown: 0
     }
 
+    this.totalSelectionsOld = {
+      'black': 0,
+      'red': 0,
+      'green': 0
+    }
+
     this.updateRouletteState = this.updateRouletteState.bind(this)
   }
 
@@ -39,23 +56,41 @@ class Roulette extends Component {
     }
 
     state.on('roulettes', this.updateRouletteState)
-
-    //TODO check if game is rolling, and wait for the next
   }
 
   componentWillUnmount() {
     state.removeAllListeners('roulettes')
   }
 
+  canBet() {
+    return this.currentGame && this.state.status === 'running'
+  }
+
   updateRouletteState(state, value, key) {
+    const { status } = this.state
     if (value && value.status) {
-      if (value.status !== this.state.status) {
-        this.setState({ status: value.status }) //open, running, pick_winner, winner_picked, ended
-        if (value.status === 'winner_picked') {
-          //TODO roll the roulette shit
-        } else if (value.status === 'running') {
-          this.countdown()
+      if (value.status !== status) {
+        /* if there's no state status (the page just rendered, wait for the next game if the current game is rolling) */
+        if (!status && value.status !== 'running') {
+          return this.setState({ status: 'waiting' })
         }
+
+        /* if the status is waiting, wait until the game is ended to set the status again */
+        if (status === 'waiting' && value.status !== 'ended') return
+
+        /* update the countdown and status if the current game is running */
+        if (value.status === 'running') {
+          return this.setState({ status: value.status, countdown: value.countdown })
+        }
+
+        this.setState({ status: value.status }) //open, running, pick_winner, winner_picked, ended
+
+        /* add the game to the history once ended */
+        if (value.status === 'ended') {
+          this.props.addRouletteHistoryGame(value)
+        }
+      } else if (value.status === 'running') {
+        this.setState({ countdown: value.countdown })
       }
     }
   }
@@ -70,16 +105,12 @@ class Roulette extends Component {
     }
   }
 
-  countdown() {
-    console.log(this.currentGame)
-  }
-
   alterInput(alter) {
     const { amount } = this.refs
     if (alter === 'clear') {
       return amount.value = null
     } else if (alter === 'max') {
-      //TODO set it equal to max
+      return amount.value = this.props.userWallet.redeemable
     }
 
     const operation = alter.charAt(0)
@@ -105,6 +136,25 @@ class Roulette extends Component {
     }
   }
 
+  joinRoulette(selection) {
+    const currentGame = this.currentGame
+    if (!currentGame) {
+      return alert('error', 'Please refresh your page', 'Roulette')
+    }
+
+    if (this.props.roulette.joining) {
+      return alert('error', 'You are already joining roulette', 'Roulette')
+    }
+
+    const amount = this.refs.amount.value
+    if (!amount || !parseInt(amount, 10)) {
+      return alert('error', 'Please enter a valid integer', 'Roulette')
+    }
+
+    this.refs.amount.value = ''
+    this.props.joinRoulette(currentGame.id, parseInt(amount), selection)
+  }
+
   renderHistoryGames() {
     return this.props.roulette.history.map((game, index) => (
       <div className={`number ${this.getOutcomeColor(game.provable.outcome)}`} key={index}>
@@ -116,12 +166,14 @@ class Roulette extends Component {
   renderRoller() {
     const { status } = this.state
     var message = null
-    if (status === 'winner_picked' || status === 'ended') {
-      return <RouletteRoller game={this.currentGame} />
+    if (status === 'waiting') {
+      message = 'Waiting for next game...'
+    } else if (status === 'winner_picked') {
+      return <RouletteRoller game={this.currentGame} onComplete={this.showWinner} />
     } else if (status === 'running') {
-      message = 'rolling in x seconds...'
+      message = `Rolling in ${this.state.countdown} seconds...`
     } else if (status === 'pick_winner') {
-      message = 'rolling...'
+      message = 'Rolling...'
     }
     return (
       <div className="segment roll">
@@ -132,6 +184,56 @@ class Roulette extends Component {
         </div>
       </div>
     )
+  }
+
+  showWinner() {
+    console.log('show winner')
+  }
+
+  getUserDetailsFromBet(userid) {
+    return this.currentGame.players[userid]
+  }
+
+  getTotalSelection(selection) {
+    if (!this.currentGame) {
+      return
+    }
+
+    const color = selections[selection]
+
+    const bets = _.filter(this.currentGame.bets, (bet) => bet.selection === color)
+
+    var total = 0.00
+    for (var i = 0; i < bets.length; i++) {
+      total += bets[i].value
+    }
+
+    const start = this.totalSelectionsOld[color] + 0
+    this.totalSelectionsOld[color] = total
+
+    return <CountUp end={total} start={start} duration={2} />
+  }
+
+  renderSelection(selection) {
+    if (!this.currentGame) {
+      return
+    }
+
+    const color = selections[selection]
+
+    const bets = _.sortBy(_.filter(this.currentGame.bets, (bet) => bet.selection === color), 'value').reverse()
+
+    return bets.map((bet, index) => {
+      const betUser = this.getUserDetailsFromBet(bet.userid)
+      const { user } = this.props
+      return (
+        <tr className={classNames({ 'listing': true, 'highest': index === 0 })} data-amount={bet.value} key={index}>
+          <td className="pp"><img src={betUser.avatar.medium} /></td>
+            <td className={classNames({ 'name': true, 'own': (bet.userid === (user ? user.id : null)) })} data-id={betUser.id}><span>{betUser.username}</span></td>
+          <td className="wager">{bet.value} <i className="hc"></i></td>
+        </tr>
+      )
+    })
   }
 
   render() {
@@ -149,7 +251,13 @@ class Roulette extends Component {
           <div className="history">
             Previous Rolls
             <div className="list">
-              { this.renderHistoryGames() }
+              <ReactCSSTransitionGroup
+                transitionName="slide"
+                transitionLeaveTimeout={0}
+                transitionEnterTimeout={500}
+              >
+                { this.renderHistoryGames() }
+              </ReactCSSTransitionGroup>
             </div>
           </div>
 
@@ -171,29 +279,47 @@ class Roulette extends Component {
           <div className="ui stackable three column grid bet-panels">
             <div className="column panel">
               <div className="ui segment red" data-selection="0">
-                <div className="header">
+                <div className="header" onClick={() => this.joinRoulette('red')}>
                   Red (even)
-                  <div className="total"></div>
+                  <div className="total">
+                    { this.getTotalSelection('0') }
+                  </div>
                 </div>
-                <table className="entries"></table>
+                <table className="entries">
+                  <tbody>
+                    { this.renderSelection('0') }
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="column panel">
-              <div className="ui segment blue" data-selection="2">
-                <div className="header">
+              <div className="ui segment blue"/*disabled*/ data-selection="2">
+                <div className="header" onClick={() => this.joinRoulette('green')}>
                   Blue (0)
-                  <div className="total"></div>
+                  <div className="total">
+                    { this.getTotalSelection('2') }
+                  </div>
                 </div>
-                <table className="entries"></table>
+                <table className="entries">
+                  <tbody>
+                    { this.renderSelection('2') }
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="column panel">
               <div className="ui segment black" data-selection="1">
-                <div className="header">
+                <div className="header" onClick={() => this.joinRoulette('black')}>
                   Black (odd)
-                  <div className="total"></div>
+                  <div className="total">
+                    { this.getTotalSelection('1') }
+                  </div>
                 </div>
-                <table className="entries"></table>
+                <table className="entries">
+                  <tbody>
+                    { this.renderSelection('1') }
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -204,19 +330,19 @@ class Roulette extends Component {
 
 }
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 const mapStateToProps = (state) => {
   return {
-    roulette: state.games.roulette
+    roulette: state.games.roulette,
+    userWallet: state.user.wallet,
+    user: state.auth.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    loadRouletteHistory
+    loadRouletteHistory,
+    addRouletteHistoryGame,
+    joinRoulette
   }, dispatch)
 }
 

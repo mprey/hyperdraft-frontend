@@ -13,7 +13,10 @@ import {
   USER_LOAD_AFFILIATE_STATS_FAILURE,
   USER_CLAIM_AFFILIATE_BALANCE,
   USER_CLAIM_AFFILIATE_BALANCE_SUCCESS,
-  USER_CLAIM_AFFILIATE_BALANCE_FAILURE
+  USER_CLAIM_AFFILIATE_BALANCE_FAILURE,
+  USER_LOAD_WALLETS,
+  USER_LOAD_WALLETS_SUCCESS,
+  USER_LOAD_WALLETS_FAILURE
 } from '../constants'
 
 const initialState = {
@@ -21,6 +24,12 @@ const initialState = {
     loaded: false,
     loading: false,
     data: {}
+  },
+  wallet: {
+    loaded: false,
+    loading: false,
+    redeemable: null,
+    nonRedeemable: null
   },
   affiliate: {
     creating: false,
@@ -35,6 +44,36 @@ const initialState = {
 
 export default function reducer(state = initialState, {type, payload}) {
   switch(type) {
+
+    /* Received when the user loads their balance/wallet from the back-end */
+    case USER_LOAD_WALLETS:
+      return {
+        ...state,
+        wallet: {
+          ...state.wallet,
+          loading: true
+        }
+      }
+    case USER_LOAD_WALLETS_SUCCESS:
+      return {
+        ...state,
+        wallet: {
+          ...state.wallet,
+          loaded: true,
+          loading: false,
+          redeemable: payload.redeemable.balance,
+          nonRedeemable: payload.non_redeemable.balance
+        }
+      }
+    case USER_LOAD_WALLETS_FAILURE:
+      return {
+        ...state,
+        wallet: {
+          ...state.wallet,
+          loaded: false,
+          loading: false
+        }
+      }
 
     /* Received when the user attempts to claim their balance */
     case USER_CLAIM_AFFILIATE_BALANCE:

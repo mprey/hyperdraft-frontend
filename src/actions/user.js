@@ -13,11 +13,29 @@ import {
   USER_LOAD_AFFILIATE_STATS_FAILURE,
   USER_CLAIM_AFFILIATE_BALANCE,
   USER_CLAIM_AFFILIATE_BALANCE_SUCCESS,
-  USER_CLAIM_AFFILIATE_BALANCE_FAILURE
+  USER_CLAIM_AFFILIATE_BALANCE_FAILURE,
+  USER_LOAD_WALLETS,
+  USER_LOAD_WALLETS_SUCCESS,
+  USER_LOAD_WALLETS_FAILURE
 } from '../constants'
 
 import { alert } from './alert'
 import client from '../socket'
+
+export function loadUserWallets() {
+  return {
+    type: 'socket',
+    types: [USER_LOAD_WALLETS, USER_LOAD_WALLETS_SUCCESS, USER_LOAD_WALLETS_FAILURE],
+    promise: (socket) => socket.emitAction('getUserWallets').catch(error => {
+      alert('error', `Error loading your balance: ${error}`, 'Wallet')
+      throw error
+    })
+  }
+}
+
+export function reloadUserWallets() {
+  return loadUserWallets()
+}
 
 export function loadInventory() {
   return {
