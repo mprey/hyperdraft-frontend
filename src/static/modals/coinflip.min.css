@@ -1,0 +1,248 @@
+.action-modal .inner .content, .action-modal .inner .content .amount.input input, .action-modal .inner .footer, .action-modal .inner .title {
+  text-align: center;
+  font-family: Montserrat, sans-serif
+}
+
+.action-modal .inner .content, .action-modal .inner .content .amount.input input, .action-modal .inner .content .ui.statistic, .action-modal .inner .footer, .action-modal .inner .footer .actions .action, .action-modal .inner .title {
+  font-family: Montserrat, sans-serif
+}
+
+.action-modal .inner {
+  display: block
+}
+
+.action-modal .inner .title {
+  color: #eee;
+  font-size: 25px;
+  background: #101c2b;
+  padding: 5px
+}
+
+.action-modal .inner .content {
+  padding-top: 10px;
+  color: #eee;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+.action-modal .inner .content .animation-container {
+  background: #0e1319;
+  padding: 10px;
+  transition: height .3s ease;
+  margin-top: -10px
+}
+
+.action-modal .inner .content .animation-container .coin-container {
+  width: 100%;
+  -webkit-animation: jump 1.8s cubic-bezier(.02, .71, .2, 1) forwards;
+  animation: jump 1.8s cubic-bezier(.02, .71, .2, 1) forwards
+}
+
+@keyframes jump {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(.5, .5, .5);
+    -moz-transform: scale3d(.5, .5, .5);
+    transform: scale3d(.5, .5, .5)
+  }
+  30%, 80% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.2, 1.2, 1.2);
+    -moz-transform: scale3d(1.2, 1.2, 1.2);
+    transform: scale3d(1.2, 1.2, 1.2)
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    -moz-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1)
+  }
+}
+
+.action-modal .inner .content .animation-container .coin-container .coin {
+  position: relative;
+  display: inline-flex;
+  width: 193px;
+  height: 194px;
+  transform-style: preserve-3d
+}
+
+.action-modal .inner .content .animation-container .coin-container .coin.ct {
+  -webkit-animation: ctWon 2s cubic-bezier(.02, .71, .2, 1) forwards;
+  animation: ctWon 2s cubic-bezier(.02, .71, .2, 1) forwards
+}
+
+.action-modal .inner .content .animation-container .coin-container .coin.t {
+  -webkit-animation: tWon 2s cubic-bezier(.02, .71, .2, 1) forwards;
+  animation: tWon 2s cubic-bezier(.02, .71, .2, 1) forwards
+}
+
+.action-modal .inner .content .animation-container .coin-container .coin .back, .action-modal .inner .content .animation-container .coin-container .coin .front {
+  position: absolute;
+  width: 193px;
+  height: 194px
+}
+
+.action-modal .inner .content .animation-container .coin-container .coin .front {
+  transform: translateZ(1px);
+  background: url(/assets/img/games/coinflip/ct.png)
+}
+
+.action-modal .inner .content .animation-container .coin-container .coin .back {
+  transform: translateZ(-1px) rotateY(180deg);
+  background: url(/assets/img/games/coinflip/t.png)
+}
+
+@keyframes ctWon {
+  from {
+    -webkit-transform: rotateY(0);
+    -moz-transform: rotateY(0);
+    transform: rotateY(0)
+  }
+  to {
+    -webkit-transform: rotateY(1080deg);
+    -moz-transform: rotateY(1080deg);
+    transform: rotateY(1080deg)
+  }
+}
+
+@keyframes tWon {
+  from {
+    -webkit-transform: rotateY(0);
+    -moz-transform: rotateY(0);
+    transform: rotateY(0)
+  }
+  to {
+    -webkit-transform: rotateY(1260deg);
+    -moz-transform: rotateY(1260deg);
+    transform: rotateY(1260deg)
+  }
+}
+
+.action-modal .inner .content .sides {
+  padding: 10px
+}
+
+.action-modal .inner .content .sides .side .image {
+  width: 90%;
+  min-width: 70px;
+  max-width: 100px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  transition: box-shadow .5s ease;
+  cursor: pointer
+}
+
+.action-modal .inner .content .sides .side .content {
+  text-overflow: ellipsis;
+  max-width: 190px;
+  overflow: hidden
+}
+
+.action-modal .inner .content .sides .side .content.you {
+  color: #054b78;
+  text-transform: uppercase;
+  font-weight: 700
+}
+
+.action-modal .inner .content .sides .side.selected.t .image, .action-modal .inner .content .sides .side.winner.t .image {
+  box-shadow: 0 0 40px #d2ae34
+}
+
+.action-modal .inner .content .sides .side.selected.ct .image, .action-modal .inner .content .sides .side.winner.ct .image {
+  box-shadow: 0 0 40px #0087dc
+}
+
+.action-modal .inner .content .amount.input {
+  min-width: 50%;
+  max-width: 80%;
+  padding: 10px;
+  display: inline-flex;
+  margin-bottom: 20px
+}
+
+.action-modal .inner .content .amount.input input {
+  background: 0 0;
+  outline: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 3px solid #054b78;
+  color: #eee;
+  transition: border .3s ease;
+  font-size: 20px
+}
+
+.action-modal .inner .content .amount.input input:focus {
+  outline-color: transparent;
+  outline-style: none;
+  border: 0;
+  border-bottom: 5px solid #0087dc
+}
+
+.action-modal .inner .content .ui.statistic {
+  padding: 10px
+}
+
+.action-modal .inner .content .ui.statistic .value {
+  color: #0087dc
+}
+
+.action-modal .inner .content .ui.statistic .value i.hc {
+  vertical-align: top;
+  width: 28px;
+  height: 28px
+}
+
+.action-modal .inner .content .ui.statistic .label {
+  color: #054b78
+}
+
+.action-modal .inner .content small.hash {
+  font-size: 10px;
+  color: rgba(238, 238, 238, .4);
+  margin-bottom: 20px
+}
+
+.action-modal .inner .content hr {
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), rgba(255, 255, 255, .75), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(255, 255, 255, .75), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, .75), rgba(0, 0, 0, 0))
+}
+
+.action-modal .inner .footer {
+  color: #eee;
+  font-size: 15px;
+  padding: 0
+}
+
+.action-modal .inner .footer .actions .action {
+  height: 50px;
+  width: 50%;
+  margin: 0;
+  color: #eee;
+  float: left;
+  border-radius: 0;
+  font-size: 16px;
+  transition: background .3s ease
+}
+
+.action-modal .inner .footer .actions .action.watch {
+  width: 100%
+}
+
+.action-modal .inner .footer .actions .action.confirm {
+  background: rgba(5, 75, 120, .8)
+}
+
+.action-modal .inner .footer .actions .action.confirm:hover {
+  background: rgba(0, 135, 220, .8)
+}
+
+.action-modal .inner .footer .actions .action.cancel {
+  background: rgba(255, 0, 0, .2)
+}
+
+.action-modal .inner .footer .actions .action.cancel:hover {
+  background: rgba(255, 0, 0, .3)
+}

@@ -1,0 +1,26 @@
+{
+  "name": "hyperdraft-backend",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "d.goodman",
+  "license": "ISC",
+  "dependencies": {
+    "@opskins/api": "^1.4.1",
+    "async": "^2.5.0",
+    "body-parser": "^1.18.2",
+    "cookie": "^0.3.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "mysql": "^2.15.0",
+    "nanotimer": "^0.3.15",
+    "request": "^2.83.0",
+    "socket.io": "^2.0.4",
+    "socketio-jwt": "^4.5.0",
+    "steam-login": "^0.1.6"
+  }
+}
