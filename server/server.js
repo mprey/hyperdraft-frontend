@@ -50,8 +50,8 @@ const connection = mysql.createPool({
 
 const app = express();
 
-const helper = require('./general')(connection, knex);
 const io = require('socket.io')(app.listen(port));
+const helper = require('./general')(connection, knex, io);
 const appRoutes = require('./routes')(router, io, connection, knex);
 app.use(parser.json());
 app.use(parser.urlencoded({extended: true}));
@@ -2184,11 +2184,9 @@ function addPlayer(steamid, side, amount, itemNames, items) {
                 });
             } else {
                 if(itemNames.length > 0) {
-                    console.log(itemNames);
                     knex('backpack').select('name').where({steamid, status: 'owned'}).whereIn('name', itemNames)
                         .then(rows => {
                             let hasItems = true;
-                            console.log(rows);
                             const backpackItems = _.pluck(rows, 'name');
                             console.log(backpackItems);
                             async.each(itemNames, (item, callback) => {
@@ -2626,6 +2624,7 @@ io.on('connection', (socket) => {
             } else {
                 //Logged in
                 socket.join(token.steamid);
+                socket.steamid = token.steamid;
                 connection.query('SELECT * FROM users WHERE steamid = '+token.steamid, (err, result) => {
                     socket.emit('event', {
                         action: 'state',
@@ -2651,10 +2650,19 @@ io.on('connection', (socket) => {
         });
     }
 
+    socket.on('market_sellItem', (data) => {
+        if(points === 0){
+            ++points;
+            helper.sellItems(socket.steamid, data.items);
+        } else {
+            socket.emit('event', {action: 'error', data: {title: 'Market Error', message: 'You may only make one request every 3 seconds'}});
+        }
+    })
+
     socket.on('roulette_addPlayer', (data) => {
         if(points === 0) {
             ++points;
-            addPlayer(data.steamid, data.side, data.amount, data.items, this.items);
+            addPlayer(socket.steamid, data.side, data.amount, data.items, this.items);
         } else {
             socket.emit('event', {action: 'error', data: {title: 'Roulette Error', message: 'You may only bet once every 3 seconds'}});
         }

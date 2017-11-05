@@ -225,7 +225,7 @@ module.exports = (router, io, connection, knex) => {
         knex('backpack').select('id', 'name').where({steamid: req.steamid, status: 'owned'})
             .then(rows => {
                 let items = rows;
-                if(rows.length <= 0) {
+                if(rows.length > 0) {
                     async.eachOf(items, (row, index, callback) => {
                         knex('items').select('image', 'price').where('name', row.name)
                             .then(item => {
