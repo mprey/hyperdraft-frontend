@@ -16,7 +16,7 @@ const apiUrl = 'http://api.csgo.steamlytics.xyz';
 
 const secret = 'joaa2ssd';
 
-module.exports = (router, io, connection) => {
+module.exports = (router, io, connection, knex) => {
 
     const setToken = function(steamid){
         return token = jwt.sign({steamid}, secret, {expiresIn: '14d'});
@@ -203,6 +203,57 @@ module.exports = (router, io, connection) => {
             res.status(200);
             res.json(data);
         });
+    });
+
+    router.use(function(req, res, next){
+        const token = req.cookies.auth;
+        if(!token) return res.redirect('https://nerdom.co/api/v1/auth');
+
+        jwt.verify(token, secret, function(err, user){
+            if(err){
+                return res.json({
+                    success: false
+                });
+            } else {
+                req.steamid = user.steamid;
+                next();
+            }
+        })
+    });
+
+    router.get('/user/backpack', (req, res) => {
+        knex('backpack').select('id', 'name').where({steamid: req.steamid, status: 'owned'})
+            .then(rows => {
+                let items = rows;
+                if(rows.length <= 0) {
+                    async.eachOf(items, (row, index, callback) => {
+                        knex('items').select('image', 'price').where('name', row.name)
+                            .then(item => {
+                                items[index].image = item[0].image;
+                                items[index].price = parseFloat(item[0].price).toFixed(2);
+                                callback();
+                            })
+                            .catch(err => {
+                                if (err) {
+                                    console.log(err);
+                                    callback('Broke');
+                                }
+                            });
+                    }, err => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            res.json({success: true, data: items});
+                        }
+                    });
+                } else {
+                    res.json({success: true, data: []});
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.json({success: false});
+            })
     });
 
     return router;

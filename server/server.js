@@ -10,7 +10,8 @@ const http = require('http'),
     NanoTimer = require('nanotimer'),
     async = require('async'),
     _ = require('underscore'),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    cookieParser = require('cookie-parser');
 
 const port = process.env.PORT || 5000;
 
@@ -51,10 +52,10 @@ const app = express();
 
 const helper = require('./general')(connection, knex);
 const io = require('socket.io')(app.listen(port));
-const appRoutes = require('./routes')(router, io, connection);
+const appRoutes = require('./routes')(router, io, connection, knex);
 app.use(parser.json());
 app.use(parser.urlencoded({extended: true}));
-
+app.use(cookieParser());
 app.use(steam.middleware({
     realm: 'https://nerdom.co',
     verify: 'https://nerdom.co/api/verify',
@@ -2183,9 +2184,11 @@ function addPlayer(steamid, side, amount, itemNames, items) {
                 });
             } else {
                 if(itemNames.length > 0) {
-                    knex.select('name').from('backpack').where({steamid, status: 'owned'}).whereIn('name', itemNames)
+                    console.log(itemNames);
+                    knex('backpack').select('name').where({steamid, status: 'owned'}).whereIn('name', itemNames)
                         .then(rows => {
                             let hasItems = true;
+                            console.log(rows);
                             const backpackItems = _.pluck(rows, 'name');
                             console.log(backpackItems);
                             async.each(itemNames, (item, callback) => {
